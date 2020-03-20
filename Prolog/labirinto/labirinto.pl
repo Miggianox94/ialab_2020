@@ -29,10 +29,18 @@ trasforma(nord,pos(R,C),pos(R1,C)) :- R1 is R-1.
 Da qui inizia la parte necessaria per le ricerche informate
 
 ############*/
-	
+
+%Chebyshev	
 h(pos(X,Y),H):-
 	finale(pos(Xlast,Ylast)),
-	H is abs(X-Xlast) + abs(Y-Ylast).
+	X_abs is abs(X-Xlast),
+	Y_abs is abs(Y-Ylast),
+	H is max(X_abs,Y_abs).
+
+%manhatthan	
+/*h(pos(X,Y),H):-
+	finale(pos(Xlast,Ylast)),
+	H is abs(X-Xlast) + abs(Y-Ylast).*/
 
 % g_funct(G,CostoCammino,G1):- G1 is G + CostoCammino.
 g_funct(G,pos(X1,Y1),pos(X2,Y2),G1):-
