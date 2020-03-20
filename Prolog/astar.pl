@@ -13,7 +13,8 @@ astar(Soluzione):-
 % 	startAstar(+Coda,_,_).
 startAstar(Coda,_,_):-
     empty_heap(Coda),!,
-    write('NESSUNA SOLUZIONE TROVATA'),nl.
+    write('NESSUNA SOLUZIONE TROVATA'),
+    fail.
 
 %controllo che il minimo della coda sia lo stato finale. Se si ho finito	
 % startAstar(+Coda,_,+ListaAzioni).

@@ -1,0 +1,25 @@
+10x10hard:
+    A*:102-18
+    IDA*:29639-18
+    IterativeDeepening:2314-18
+10x10_test:
+    A*:55-20
+    IDA*:10654-20
+    IterativeDeepening:2639-20
+20x20_test:
+    A*: 394-23
+    IDA*: too much
+    IterativeDeepening: 3400904-23
+10x10_test_cost:
+    A*: 72-22
+    IDA*: 10413-20
+    IterativeDeepening: 1905-20
+10x10_nosolutions:
+    A*: fail
+    IDA*: no finish
+    IterativeDeepening: no finish
+10x10_hard_multiple:
+    A*: 92-24
+    IDA*: 33977532 - 22
+    IterativeDeepening:26484-22
+
