@@ -60,9 +60,9 @@ Ore {lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore8(Ora
 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,_,_),ore8(Ora)} 4 :- giornata(Giornata,_),insegnante(Professore).
 
 %*a ciascun insegnamento vengono assegnate minimo 2 e massimo 4 ore 
-nello stesso giorno ---> non tanto chiaro, detto così non è soddisfacibile*%
-%2 {lezione(Giornata,Professore,Insegnamento,Ora):ore8(Ora)} 4 :- insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero,giornata(Giornata,_).
-
+nello stesso giorno*%
+{lezione(Giornata,Professore,Insegnamento,Ora):ore8(Ora)} 4 :- insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero,giornata(Giornata,_).
+:- 1 {lezione(Giornata,Professore,Insegnamento,Ora):ore8(Ora)} 1, giornata(Giornata,_),Insegnamento!=bloccolibero,insegnamento(Insegnamento,Professore,_).
 
 %*il primo giorno di lezione prevede che, nelle prime due ore, vi sia la
 presentazione del master*%
@@ -77,7 +77,7 @@ per eventuali recuperi di lezioni annullate o rinviate*%
 
 %*l’insegnamento “Project Management” deve concludersi non oltre la
 prima settimana full-time*%
-:- lezione(Giornata,muzzetto,project_management,_), Giornata > 7.
+:- lezione(Giornata,_,project_management,_), Giornata > 7.
 
 %*la prima lezione dell’insegnamento “Accessibilità e usabilità nella
 progettazione multimediale” deve essere collocata prima che siano

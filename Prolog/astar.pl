@@ -1,3 +1,5 @@
+%prolog param description: https://www.swi-prolog.org/pldoc/man?section=preddesc
+
 % astar(-Soluzione).
 astar(Soluzione):-
     iniziale(S),
