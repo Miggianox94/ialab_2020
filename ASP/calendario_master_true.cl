@@ -55,11 +55,6 @@ propedeutica(acquisizione_elaborazione_immagini_stat,elementi_fotografia_digital
 propedeutica(elementi_fotografia_digitale,acquisizione_elaborazione_sequenze_immagini_digitali).
 propedeutica(acquisizione_elaborazione_immagini_stat,grafica_3d).
 
-propedeutica_4(fondamenti_di_iCT_e_paradigmi_di_programmazione,progettazione_basi_dati).
-propedeutica_4(marketing_digitale,introduzione_social_media_management).
-propedeutica_4(comunicazione_pubblicitaria_comunicazione_pubblica,gestione_risorse_umane).
-propedeutica_4(tecnologie_server_side_web,progettazione_sviluppo_applicazioni_web_mobile1).
-
 
 %numero giorni totali assumendo che la prima sia un venerdì
 %*giornata8(1;3;5;7;8;9;10;11;13;15;17;19;21;23;25;27;29;30;31;32;33;35;37;39;41;43;45;47).
@@ -163,17 +158,17 @@ prima settimana full-time*%
 %*la prima lezione dell’insegnamento “Accessibilità e usabilità nella
 progettazione multimediale” deve essere collocata prima che siano
 terminate le lezioni dell’insegnamento “Linguaggi di markup”*%
-:- Min=#min{giornata(Giornata):lezione(Giornata,_,accessibilita_usabilita_progettazione_multimediale,_)}, Max=#max{giornata(Giornata1):lezione(Giornata1,_,linguaggi_di_markup,_)}, Max > Min.
+:- Min=#min{Giornata:lezione(Giornata,_,accessibilita_usabilita_progettazione_multimediale,_)}, Max=#max{Giornata1:lezione(Giornata1,_,linguaggi_di_markup,_)}, Max > Min.
 
 
 %ogni insegnamento deve rispettare le propedeuticità
-:- UltimoPrima=#max{giornata(Giornata):lezione(Giornata,_,LezionePrima,_)}, PrimoDopo=#min{giornata(Giornata1):lezione(Giornata1,_,LezioneDopo,_)}, propedeutica(LezionePrima,LezioneDopo),UltimoPrima > PrimoDopo.
+:- UltimoPrima=#max{Giornata:lezione(Giornata,_,LezionePrima,_)}, PrimoDopo=#min{Giornata1:lezione(Giornata1,_,LezioneDopo,_)}, propedeutica(LezionePrima,LezioneDopo),UltimoPrima > PrimoDopo.
 
 %-----------DA QUI INIZIANO I VINCOLI AUSPICABILI
 
 %*la distanza tra la prima e l’ultima lezione di ciascun insegnamento non
 deve superare le 6 settimane = 30 giorni*%
-:- Min=#min{giornata(Inizio):lezione(Inizio,_,Insegnamento,_)}, Max=#max{giornata(Fine):lezione(Fine,_,Insegnamento,_)}, Diff =(Max - Min), Diff > 30.
+:- Min=#min{Inizio:lezione(Inizio,_,Insegnamento,_)}, Max=#max{Fine:lezione(Fine,_,Insegnamento,_)}, Diff =(Max - Min), Diff > 30.
 
 
 
@@ -195,13 +190,10 @@ propedeuticità:in particolare la prima lezione dell’insegnamento della
 colonna di destra deve essere successiva alle prime 4 ore di lezione del
 corrispondente insegnamento della colonna di sinistra
 *%
-%*:- Destra=#min{giornata(Inizio):lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{giornata(Fine):lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Destra <= Sinistra+4.
-:- Destra=#min{giornata(Inizio):lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{giornata(Fine):lezione(Fine,_,marketing_digitale,_)}, Destra <= Sinistra+4.
-:- Destra=#min{giornata(Inizio):lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{giornata(Fine):lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Destra <= Sinistra+4.
-:- Destra=#min{giornata(Inizio):lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{giornata(Fine):lezione(Fine,_,tecnologie_server_side_web,_)}, Destra <= Sinistra+4.
-*%
-
-:- LezSinistra=#min{giornata(Giornata):lezione(Giornata,_,Sinistra,_)}, LezDestra=#min{giornata(Giornata1):lezione(Giornata1,_,Destra,_)}, propedeutica_4(Sinistra,Destra),LezDestra <= LezSinistra+4.
+:- Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Destra <= Sinistra+4.
+:- Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Destra <= Sinistra+4.
+:- Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Destra <= Sinistra+4.
+:- Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Destra <= Sinistra+4.
 
 
 
@@ -210,8 +202,8 @@ la distanza fra l’ultima lezione di “Progettazione e sviluppo di applicazion
 web su dispositivi mobile I” e la prima di “Progettazione e sviluppo di
 applicazioni web su dispositivi mobile II” non deve superare le due
 settimane.*%
-minAppWeb2(Min) :- Min=#min{giornata(Inizio):lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}.
-maxAppWeb1(Max) :- Max=#max{giornata(Fine):lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}.
+minAppWeb2(Min) :- Min=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}.
+maxAppWeb1(Max) :- Max=#max{Fine:lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}.
 :- minAppWeb2(Min), maxAppWeb1(Max), Max-Min > 10.
 %:- Min=#min{giornata(Inizio):lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)},Max=#max{giornata(Fine):lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Max-Min > 1.
 
