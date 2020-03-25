@@ -1,4 +1,4 @@
-%lanciare file con questa ottimizzazione --trans-ext=card
+%lanciare file con questa ottimizzazione --trans-ext=dynamic
 
 %*
 Le lezioni del master si svolgono il venerdì (8 ore) e il sabato (4 o 5 ore) nell’unica aula assegnata al Master, per 23 settimane.
@@ -115,15 +115,21 @@ ore8(1..8).
 ore5(1..5).
 
 
+%vincoli auspicabili attivi
+vincoloAttivo(nessuno).
+
 %ogni giorno da 8 ci devono essere 8 ore lezione
 8 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} 8 :- giornata(Giornata,8).
 
 %ogni giorno da 5 ci devono essere 5 ore lezione --> todo: dovrei anche poterla togliere se sistemo la prima per essere indipendente dalle 8
 5 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore5(Ora)} 5 :- giornata(Giornata,5).
+:- giornata(Giornata,5), lezione(Giornata,_,_,6).
+:- giornata(Giornata,5), lezione(Giornata,_,_,7).
+:- giornata(Giornata,5), lezione(Giornata,_,_,8).
 
 %in un giorno ad ogni ora ci deve essere solo 1 lezione
-1 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore8(Ora).
-1 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore5(Ora).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore8(Ora).
+%1 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,5), ore5(Ora).
 
 %tutti gli insegnamenti devono completare il monte ore
 Ore {lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore8(Ora)} Ore :- insegnamento(Insegnamento,Professore,Ore), Insegnamento!=bloccolibero.
@@ -164,23 +170,23 @@ terminate le lezioni dell’insegnamento “Linguaggi di markup”*%
 %ogni insegnamento deve rispettare le propedeuticità
 :- UltimoPrima=#max{Giornata:lezione(Giornata,_,LezionePrima,_)}, PrimoDopo=#min{Giornata1:lezione(Giornata1,_,LezioneDopo,_)}, propedeutica(LezionePrima,LezioneDopo),UltimoPrima > PrimoDopo.
 
-%-----------DA QUI INIZIANO I VINCOLI AUSPICABILI
+%-----------DA QUI INIZIANO I VINCOLI AUSPICABILI---------
 
 %*la distanza tra la prima e l’ultima lezione di ciascun insegnamento non
 deve superare le 6 settimane = 30 giorni*%
-:- Min=#min{Inizio:lezione(Inizio,_,Insegnamento,_)}, Max=#max{Fine:lezione(Fine,_,Insegnamento,_)}, Diff =(Max - Min), Diff > 30.
+:- vincoloAttivo(0), Min=#min{Inizio:lezione(Inizio,_,Insegnamento,_)}, Max=#max{Fine:lezione(Fine,_,Insegnamento,_)}, Diff =(Max - Min), Diff > 30.
 
 
 
 %*la prima lezione degli insegnamenti “Crossmedia: articolazione delle
 scritture multimediali” e “Introduzione al social media management”
-devono essere collocate nella seconda settimana full-time ---> ATTENZIONE NON SEMBRANO SODDISFACIBILI*%
+devono essere collocate nella seconda settimana full-time*%
 
-%:- Min=#min{giornata(Inizio):lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min > 32.
-%:- Min=#min{giornata(Inizio):lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min < 29.
+:- vincoloAttivo(1), Min=#min{Inizio:lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min > 32.
+:- vincoloAttivo(1), Min=#min{Inizio:lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min < 29.
 
-%:- Min=#min{giornata(Inizio):lezione(Inizio,_,introduzione_social_media_management,_)}, Min > 32.
-%:- Min=#min{giornata(Inizio):lezione(Inizio,_,introduzione_social_media_management,_)}, Min < 29.
+:- vincoloAttivo(2), Min=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Min > 32.
+:- vincoloAttivo(2), Min=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Min < 29.
 
 
 
@@ -190,10 +196,10 @@ propedeuticità:in particolare la prima lezione dell’insegnamento della
 colonna di destra deve essere successiva alle prime 4 ore di lezione del
 corrispondente insegnamento della colonna di sinistra
 *%
-:- Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Destra <= Sinistra+4.
-:- Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Destra <= Sinistra+4.
-:- Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Destra <= Sinistra+4.
-:- Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Destra <= Sinistra+4.
+:- vincoloAttivo(3), Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Destra <= Sinistra+4.
+:- vincoloAttivo(4), Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Destra <= Sinistra+4.
+:- vincoloAttivo(5), Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Destra <= Sinistra+4.
+:- vincoloAttivo(6), Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Destra <= Sinistra+4.
 
 
 
@@ -204,8 +210,7 @@ applicazioni web su dispositivi mobile II” non deve superare le due
 settimane.*%
 minAppWeb2(Min) :- Min=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}.
 maxAppWeb1(Max) :- Max=#max{Fine:lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}.
-:- minAppWeb2(Min), maxAppWeb1(Max), Max-Min > 10.
-%:- Min=#min{giornata(Inizio):lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)},Max=#max{giornata(Fine):lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Max-Min > 1.
+:- vincoloAttivo(7),  minAppWeb2(Min), maxAppWeb1(Max), (Max-Min) > 10.
 
 
 #show lezione/4.
