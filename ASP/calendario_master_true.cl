@@ -57,8 +57,8 @@ propedeutica(acquisizione_elaborazione_immagini_stat,grafica_3d).
 
 
 %numero giorni totali assumendo che la prima sia un venerdì
-%*giornata8(1;3;5;7;8;9;10;11;13;15;17;19;21;23;25;27;29;30;31;32;33;35;37;39;41;43;45;47).
-giornata5(2;4;6;12;14;16;18;20;22;24;26;28;34;36;38;40;42;44;46;48).
+%*giornata8(1;3;5;7;8;9;10;11;13;15;17;19;21;23;25;27;29;30;31;32;33;35;37;39;41;43;45;47). =28 giorni
+giornata5(2;4;6;12;14;16;18;20;22;24;26;28;34;36;38;40;42;44;46;48).= 20
 *%
 
 
@@ -73,9 +73,9 @@ giornata(8,8).
 giornata(9,8).
 giornata(10,8).
 giornata(11,8).
-giornata(12,8).
+giornata(12,5).
 giornata(13,8).
-giornata(14,8).
+giornata(14,5).
 giornata(15,8).
 giornata(16,5).
 giornata(17,8).
@@ -119,23 +119,26 @@ ore5(1..5).
 vincoloAttivo(nessuno).
 
 %ogni giorno da 8 ci devono essere 8 ore lezione
-8 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} 8 :- giornata(Giornata,8).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} = 8 :- giornata(Giornata,8).
+%Ore {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} Ore :- giornata(Giornata,Ore).
 
 %ogni giorno da 5 ci devono essere 5 ore lezione --> todo: dovrei anche poterla togliere se sistemo la prima per essere indipendente dalle 8
-5 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore5(Ora)} 5 :- giornata(Giornata,5).
-:- giornata(Giornata,5), lezione(Giornata,_,_,6).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore5(Ora)} = 5 :- giornata(Giornata,5).
+%*:- giornata(Giornata,5), lezione(Giornata,_,_,6).
 :- giornata(Giornata,5), lezione(Giornata,_,_,7).
-:- giornata(Giornata,5), lezione(Giornata,_,_,8).
+:- giornata(Giornata,5), lezione(Giornata,_,_,8).*%
+%%:- giornata(Giornata,5), lezione(Giornata,_,_,Ore), Ore > 5.
 
 %in un giorno ad ogni ora ci deve essere solo 1 lezione
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore8(Ora).
-%1 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,5), ore5(Ora).
+%{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore8(Ora).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} = 1 :- giornata(Giornata,8), ore8(Ora).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} = 1 :- giornata(Giornata,5), ore5(Ora).
 
 %tutti gli insegnamenti devono completare il monte ore
 Ore {lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore8(Ora)} Ore :- insegnamento(Insegnamento,Professore,Ore), Insegnamento!=bloccolibero.
 
 %ogni insegnamento deve essere tenuto da un solo docente
-:- lezione(_,Professore1,Insegnamento1,_), lezione(_,Professore2,Insegnamento2,_), Professore1 != Professore2, Insegnamento1 == Insegnamento2.
+:- lezione(_,Professore1,Insegnamento1,_), lezione(_,Professore2,Insegnamento2,_), Professore1 != Professore2, Insegnamento1 = Insegnamento2.
 
 
 %lo stesso docente non può svolgere più di 4 ore di lezione in un giorno
