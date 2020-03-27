@@ -111,54 +111,39 @@ giornata(46,5).
 giornata(47,8).
 giornata(48,5).
 
-ore8(1..8).
-ore5(1..5).
+ore(1..8).
 
-
-%vincoli auspicabili attivi
-vincoloAttivo(nessuno).
 
 %ogni giorno da 8 ci devono essere 8 ore lezione
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} = 8 :- giornata(Giornata,8).
-%Ore {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore8(Ora)} Ore :- giornata(Giornata,Ore).
+{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora)} 8 :- giornata(Giornata,_).
+:- {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora)} < 8,giornata(Giornata,8).
 
-%ogni giorno da 5 ci devono essere 5 ore lezione --> todo: dovrei anche poterla togliere se sistemo la prima per essere indipendente dalle 8
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore5(Ora)} = 5 :- giornata(Giornata,5).
-%*:- giornata(Giornata,5), lezione(Giornata,_,_,6).
-:- giornata(Giornata,5), lezione(Giornata,_,_,7).
-:- giornata(Giornata,5), lezione(Giornata,_,_,8).*%
-%%:- giornata(Giornata,5), lezione(Giornata,_,_,Ore), Ore > 5.
+%ogni giorno da 5 ci devono essere 5 ore lezione
+:- not 5{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora)}5,giornata(Giornata,5).
+
 
 %in un giorno ad ogni ora ci deve essere solo 1 lezione
-%{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,_), ore8(Ora).
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} = 1 :- giornata(Giornata,8), ore8(Ora).
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} = 1 :- giornata(Giornata,5), ore5(Ora).
+:- {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} > 1, giornata(Giornata,_), ore(Ora).
 
 %tutti gli insegnamenti devono completare il monte ore
-Ore {lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore8(Ora)} Ore :- insegnamento(Insegnamento,Professore,Ore), Insegnamento!=bloccolibero.
-
-%ogni insegnamento deve essere tenuto da un solo docente
-:- lezione(_,Professore1,Insegnamento1,_), lezione(_,Professore2,Insegnamento2,_), Professore1 != Professore2, Insegnamento1 = Insegnamento2.
-
+:- not Ore{lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore(Ora)}Ore, insegnamento(Insegnamento,Professore,Ore),Insegnamento!=bloccolibero.
 
 %lo stesso docente non può svolgere più di 4 ore di lezione in un giorno
-{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,_,_),ore8(Ora)} 4 :- giornata(Giornata,_),insegnante(Professore).
+:- {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,_,_),ore(Ora)} > 4, giornata(Giornata,_),insegnante(Professore).
 
 %*a ciascun insegnamento vengono assegnate minimo 2 e massimo 4 ore 
 nello stesso giorno*%
-{lezione(Giornata,Professore,Insegnamento,Ora):ore8(Ora)} 4 :- insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero,giornata(Giornata,_).
-:- 1 {lezione(Giornata,Professore,Insegnamento,Ora):ore8(Ora)} 1, giornata(Giornata,_),Insegnamento!=bloccolibero,insegnamento(Insegnamento,Professore,_).
+:- 1 {lezione(Giornata,Professore,Insegnamento,Ora):ore(Ora)} 1, giornata(Giornata,_),insegnamento(Insegnamento,Professore,_),Insegnamento!=bloccolibero.
+:- {lezione(Giornata,Professore,Insegnamento,Ora):ore(Ora)} > 4, giornata(Giornata,_),insegnamento(Insegnamento,Professore,_),Insegnamento!=bloccolibero.
 
 %*il primo giorno di lezione prevede che, nelle prime due ore, vi sia la
 presentazione del master*%
 lezione(1,presentazioneCorso,presentazioneCorso,1).
 lezione(1,presentazioneCorso,presentazioneCorso,2).
 
-
-
 %*il calendario deve prevedere almeno 2 blocchi liberi di 2 ore ciascuno
 per eventuali recuperi di lezioni annullate o rinviate*%
-:- {lezione(Giornata,_,bloccolibero,Ora)} 3.
+:- {lezione(_,_,bloccolibero,_)} 3.
 
 %*l’insegnamento “Project Management” deve concludersi non oltre la
 prima settimana full-time*%
