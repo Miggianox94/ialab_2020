@@ -4,16 +4,25 @@ import csv
 #day,prof,insegnamento,ora
 INPUT_DATA_FILE = 'test_doc.csv'
 
-def testHoursDay(df,days,hoursexpected):
+
+def testHoursDay(df, days, hoursexpected):
     for currday in days:
         if len(df[(df['day']==currday)]) != hoursexpected:
-            print("Day ",currday," hasn't",hoursexpected," hours of lessons!")
+            print("Day ", currday, " hasn't", hoursexpected, " hours of lessons!")
             return False
     return True
 
 def onelessonperhour(df):
-    if len(df) > 48*8:
+    if len(df) > (28*8+20*5):
         print("There are more than one lesson per hour!")
+        return False
+    return True
+
+def oneTeacherPerTopic(df):
+    uniqueprof = df['prof'].nunique()
+    uniqueinsegnamento = df['insegnamento'].nunique()
+    if uniqueprof != 24 or uniqueinsegnamento != 28:
+        print("uniqueprof != 24 or uniqueinsegnamento != 28")
         return False
     return True
 
@@ -25,6 +34,13 @@ def allMonteOre(df,monteoredays):
         if currInsegnamento!='bloccolibero' and len(df[(df['insegnamento']==currInsegnamento)]) != monteoredays.get(currInsegnamento):
             print("Insegnamento ",currInsegnamento," hasn't completed",monteoredays.get(currInsegnamento)," hours of lessons!")
             return False
+    return True
+
+def noMoreThanFourLessonsPerTeacher(df,teachers):
+    groupedseries = df.groupby(['day','prof']).size()
+    if (groupedseries > 4).any():
+        print("Some teachers has more than 4 lesson in a day!")
+        return False
     return True
 
 def runTests():
@@ -62,6 +78,7 @@ def runTests():
         "bloccolibero":4,
         "presentazioneCorso":2
         }
+    TEACHERS = ["muzzetto", "pozzato", "gena", "tomatis", "micalizio", "terranova", "mazzei", "giordani", "zanchetta", "vargiu", "boniolo", "damiano", "suppini", "valle", "ghidelli", "gabardi", "santangelo", "taddeo", "gribaudo", "schifanella", "lombardo", "travostino", "bloccolibero", "presentazioneCorso"]
 
     '''
     with open(INPUT_DATA_FILE, 'rb') as csvfile:
@@ -83,8 +100,10 @@ def runTests():
     allMonteOre(df,INSEGNAMENTI_ORE)
 
     #ogni insegnamento deve essere tenuto da un solo docente
+    oneTeacherPerTopic(df)
 
     #lo stesso docente non può svolgere più di 4 ore di lezione in un giorno
+    noMoreThanFourLessonsPerTeacher(df,TEACHERS)
 
     #a ciascun insegnamento vengono assegnate minimo 2 e massimo 4 ore nello stesso giorno
 

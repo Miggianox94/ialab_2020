@@ -6,7 +6,7 @@ Inoltre, sono previste due settimane full-time, la 7a e la 16a, con lezioni dal 
 *%
 
 %dichiaro gli insegnanti
-insegnante(muzzetto;pozzato;gena;tomatis;micalizio;terranova;mazzei;giordani;zanchetta;vargiu;boniolo;damiano;suppini;valle;ghidelli;gabardi;santangelo;taddeo;gribaudo;schifanella;lombardo;travostino;bloccolibero).
+insegnante(muzzetto;pozzato;gena;tomatis;micalizio;terranova;mazzei;giordani;zanchetta;vargiu;boniolo;damiano;suppini;valle;ghidelli;gabardi;santangelo;taddeo;gribaudo;schifanella;lombardo;travostino;bloccolibero;presentazioneCorso).
 insegnamento(project_management;fondamenti_di_iCT_e_paradigmi_di_programmazione;linguaggi_di_markup;bloccolibero;presentazioneCorso).
 %dichiaro gli insegnamenti come insegnamento(nome,docente,oretotali)
 insegnamento(project_management,muzzetto,3).
@@ -32,7 +32,7 @@ ore(1..8).
 :- {lezione(Giornata,Professore,Insegnamento,Ora):insegnante(Professore),insegnamento(Insegnamento), ore(Ora)} < 8,giornata(Giornata,8).
 
 %ogni giorno da 5 ci devono essere 5 ore lezione
-:- not 5{lezione(Giornata,Professore,Insegnamento,Ora):insegnante(Professore),insegnamento(Insegnamento), ore(Ora)}5,giornata(Giornata,5).
+5{lezione(Giornata,Professore,Insegnamento,Ora):insegnante(Professore),insegnamento(Insegnamento), ore(Ora)}5 :- giornata(Giornata,5).
 
 
 %in un giorno ad ogni ora ci deve essere solo 1 lezione
