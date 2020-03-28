@@ -1,7 +1,7 @@
 %lanciare file con questa ottimizzazione --trans-ext=dynamic
 
 %*
-Le lezioni del master si svolgono il venerdì (8 ore) e il sabato (4 o 5 ore) nell’unica aula assegnata al Master, per 23 settimane.
+Le lezioni del master si svolgono il venerdì (8 ore) e il sabato (4 o 5 ore) nell’unica aula assegnata al Master, per 24 settimane.
 Inoltre, sono previste due settimane full-time, la 7a e la 16a, con lezioni dal lunedì al sabato (8 ore al giorno da lunedì a venerdì, 4 o 5 ore al sabato)
 *%
 
@@ -58,68 +58,98 @@ propedeutica(acquisizione_elaborazione_immagini_stat,grafica_3d).
 
 
 %numero giorni totali assumendo che la prima sia un venerdì
-%*giornata8(1;3;5;7;8;9;10;11;13;15;17;19;21;23;25;27;29;30;31;32;33;35;37;39;41;43;45;47). =28 giorni
-giornata5(2;4;6;12;14;16;18;20;22;24;26;28;34;36;38;40;42;44;46;48).= 20
-*%
+
+
 
 
 giornata(1,8).
 giornata(2,5).
+
 giornata(3,8).
 giornata(4,5).
+
 giornata(5,8).
 giornata(6,5).
+
 giornata(7,8).
-giornata(8,8).
+giornata(8,5).
+
 giornata(9,8).
-giornata(10,8).
+giornata(10,5).
+
 giornata(11,8).
 giornata(12,5).
+
 giornata(13,8).
-giornata(14,5).
+giornata(14,8).
 giornata(15,8).
-giornata(16,5).
+giornata(16,8).
 giornata(17,8).
 giornata(18,5).
+
 giornata(19,8).
 giornata(20,5).
+
 giornata(21,8).
 giornata(22,5).
+
 giornata(23,8).
 giornata(24,5).
+
 giornata(25,8).
 giornata(26,5).
+
 giornata(27,8).
 giornata(28,5).
+
 giornata(29,8).
-giornata(30,8).
+giornata(30,5).
+
 giornata(31,8).
-giornata(32,8).
+giornata(32,5).
+
 giornata(33,8).
 giornata(34,5).
+
 giornata(35,8).
-giornata(36,5).
+giornata(36,8).
 giornata(37,8).
-giornata(38,5).
+giornata(38,8).
 giornata(39,8).
 giornata(40,5).
+
 giornata(41,8).
 giornata(42,5).
+
 giornata(43,8).
 giornata(44,5).
+
 giornata(45,8).
 giornata(46,5).
+
 giornata(47,8).
 giornata(48,5).
 
+giornata(49,8).
+giornata(50,5).
+
+giornata(51,8).
+giornata(52,5).
+
+giornata(53,8).
+giornata(54,5).
+
+giornata(55,8).
+giornata(56,5).
+
+
 ore(1..8).
 
+vincoloAttivo(1;2;3;4;5;6;7;0).
 
-%ogni giorno da 8 ci devono essere 8 ore lezione
+
+%ogni giorno deve avere esattamente le sue ore di lezione-> tot=376
 8 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora)} 8 :- giornata(Giornata,8).
-
-%ogni giorno da 5 ci devono essere 5 ore lezione
-%5{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora)}5 :- giornata(Giornata,5).
 5 {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_), ore(Ora), Ora<6} 5 :- giornata(Giornata,5).
 
 
@@ -127,22 +157,18 @@ ore(1..8).
 
 %in un giorno ad ogni ora ci deve essere solo 1 lezione
 :- {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} > 1, giornata(Giornata,_), ore(Ora).
-%{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,8), ore(Ora).
-%{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_)} 1 :- giornata(Giornata,5), ore(Ora), Ora<6.
 
 %tutti gli insegnamenti devono completare il monte ore
-:- not Ore{lezione(Giornata,Professore,Insegnamento,Ora):giornata(Giornata,_),ore(Ora)}Ore, insegnamento(Insegnamento,Professore,Ore),Insegnamento!=bloccolibero.
-
+:- insegnamento(Insegnamento1,_,OreRichieste), Insegnamento1!=bloccolibero, {lezione(_,_,Insegnamento1,_)} != OreRichieste.
 
 %lo stesso docente non può svolgere più di 4 ore di lezione in un giorno
-:- {lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,_,_),ore(Ora), Insegnamento!=bloccolibero} > 4, giornata(Giornata,_),insegnante(Professore).
-%{lezione(Giornata,Professore,Insegnamento,Ora):insegnamento(Insegnamento,Professore,_),ore(Ora), Insegnamento!=bloccolibero} 4 :- giornata(Giornata,_),insegnante(Professore).
+:- {lezione(Giornata,Professore,_,_)} > 4, giornata(Giornata,_),insegnante(Professore), Professore!=bloccolibero.
 
 %*a ciascun insegnamento vengono assegnate minimo 2 e massimo 4 ore 
 nello stesso giorno*%
 :- 1 {lezione(Giornata,Professore,Insegnamento,Ora):ore(Ora)} 1, giornata(Giornata,_),insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero.
 :- {lezione(Giornata,Professore,Insegnamento,Ora):ore(Ora)} > 4, giornata(Giornata,_),insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero.
-%2 {lezione(Giornata,Professore,Insegnamento,Ora):ore(Ora)} 4 :- insegnamento(Insegnamento,Professore,_),giornata(Giornata,_),Insegnamento!=bloccolibero.
+
 
 %*il primo giorno di lezione prevede che, nelle prime due ore, vi sia la
 presentazione del master*%
@@ -154,7 +180,59 @@ per eventuali recuperi di lezioni annullate o rinviate*%
 :- {lezione(_,bloccolibero,bloccolibero,_)} 3.
 
 
+%*l’insegnamento “Project Management” deve concludersi non oltre la
+prima settimana full-time*%
+:- lezione(Giornata,_,project_management,_), Giornata > 18.
+
+%*la prima lezione dell’insegnamento “Accessibilità e usabilità nella
+progettazione multimediale” deve essere collocata prima che siano
+terminate le lezioni dell’insegnamento “Linguaggi di markup”*%
+:- Min=#min{Giornata:lezione(Giornata,_,accessibilita_usabilita_progettazione_multimediale,_)}, Max=#max{Giornata1:lezione(Giornata1,_,linguaggi_di_markup,_)}, Max > Min.
 
 
+%ogni insegnamento deve rispettare le propedeuticità
+:- UltimoPrima=#max{Giornata:lezione(Giornata,_,LezionePrima,_)}, PrimoDopo=#min{Giornata1:lezione(Giornata1,_,LezioneDopo,_)}, propedeutica(LezionePrima,LezioneDopo),UltimoPrima > PrimoDopo.
+
+%-----------DA QUI INIZIANO I VINCOLI AUSPICABILI---------
+
+%*la distanza tra la prima e l’ultima lezione di ciascun insegnamento non
+deve superare le 6 settimane = 30 giorni*%
+:- vincoloAttivo(0), Min=#min{Inizio:lezione(Inizio,_,Insegnamento,_)}, Max=#max{Fine:lezione(Fine,_,Insegnamento,_)},insegnamento(Insegnamento,Professore,_), Insegnamento!=bloccolibero, Diff =(Max - Min), Diff > 30.
+
+
+
+%*la prima lezione degli insegnamenti “Crossmedia: articolazione delle
+scritture multimediali” e “Introduzione al social media management”
+devono essere collocate nella seconda settimana full-time*%
+
+:- vincoloAttivo(1), Min=#min{Inizio:lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min > 40.
+:- vincoloAttivo(1), Min=#min{Inizio:lezione(Inizio,_,crossmedia_articolazione_scritture_multimediali,_)}, Min < 35.
+
+:- vincoloAttivo(2), Min=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Min > 40.
+:- vincoloAttivo(2), Min=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Min < 35.
+
+
+
+%*
+le lezioni dei vari insegnamenti devono rispettare le seguenti
+propedeuticità:in particolare la prima lezione dell’insegnamento della
+colonna di destra deve essere successiva alle prime 4 ore di lezione del
+corrispondente insegnamento della colonna di sinistra
+*%
+:- vincoloAttivo(3), Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(4), Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(5), Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(6), Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+
+
+
+%*
+la distanza fra l’ultima lezione di “Progettazione e sviluppo di applicazioni
+web su dispositivi mobile I” e la prima di “Progettazione e sviluppo di
+applicazioni web su dispositivi mobile II” non deve superare le due
+settimane.*%
+minAppWeb2(Min) :- Min=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}.
+maxAppWeb1(Max) :- Max=#max{Fine:lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}.
+:- vincoloAttivo(7),  minAppWeb2(Min), maxAppWeb1(Max), (Max-Min) > 10.
 
 #show lezione/4.

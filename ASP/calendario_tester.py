@@ -13,7 +13,7 @@ def testHoursDay(df, days, hoursexpected):
     return True
 
 def onelessonperhour(df):
-    if len(df) > (28*8+20*5):
+    if len(df) > (32*8+24*5):
         print("There are more than one lesson per hour!")
         return False
     return True
@@ -43,11 +43,40 @@ def noMoreThanFourLessonsPerTeacher(df,teachers):
         return False
     return True
 
+def twoToFourHoursPerDay(df):
+    df_copy = df.copy()
+    df_copy = df_copy.drop(df_copy[df_copy.insegnamento == 'bloccolibero'].index)
+    groupedseries = df_copy.groupby(['day','insegnamento']).size()
+    if (groupedseries > 4 ).any():
+        print("Some insegnamento has more than 4 hours in a day")
+        return False
+    if (groupedseries == 1 ).any():
+        print("Some insegnamento has 1 hour in a day")
+        print(groupedseries)
+        return False
+    return True
+
+def checkFirstTwoDays(df):
+
+    if (df.loc[(df['day'] == 1) & (df['ora'] == 1)].insegnamento != 'presentazioneCorso').all():
+        print("First day is not presentazioneCorso")
+        return False
+    if (df.loc[(df['day'] == 1) & (df['ora'] == 2)].insegnamento != 'presentazioneCorso').all():
+        print("Second day is not presentazioneCorso")
+        return False
+    return True
+
+def checkBloccoLibero(df):
+    if len(df.loc[df['insegnamento'] == 'bloccolibero']) <= 4:
+        print("Not enough bloccolibero!")
+        return False
+    return True
+
 def runTests():
     df = pd.read_csv(INPUT_DATA_FILE,index_col=False, skipinitialspace=True)
     mystring = ''
-    DAYSEIGHT = {1,3,5,7,8,9,10,11,13,15,17,19,21,23,25,27,29,30,31,32,33,35,37,39,41,43,45,47}
-    DAYSFIVE = {2,4,6,12,14,16,18,20,22,24,26,28,34,36,38,40,42,44,46,48}
+    DAYSEIGHT = {1,3,5,7,9,11,13,14,15,16,17,19,21,23,25,27,29,31,33,35,36,37,38,39,41,43,45,47,49,51,53,55}
+    DAYSFIVE = {2,4,6,8,10,12,18,20,22,24,26,28,30,32,34,40,42,44,46,48,50,52,54,56}
     INSEGNAMENTI_ORE= {
         "project_management":14,
         "fondamenti_di_iCT_e_paradigmi_di_programmazione":14,
@@ -106,10 +135,13 @@ def runTests():
     noMoreThanFourLessonsPerTeacher(df,TEACHERS)
 
     #a ciascun insegnamento vengono assegnate minimo 2 e massimo 4 ore nello stesso giorno
+    twoToFourHoursPerDay(df)
 
     #il primo giorno di lezione prevede che, nelle prime due ore, vi sia la presentazione del master
+    checkFirstTwoDays(df)
 
     #il calendario deve prevedere almeno 2 blocchi liberi di 2 ore ciascun per eventuali recuperi di lezioni annullate o rinviate
+    checkBloccoLibero(df)
 
     #l’insegnamento “Project Management” deve concludersi non oltre l prima settimana full-time
 
