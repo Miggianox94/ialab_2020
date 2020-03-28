@@ -187,7 +187,7 @@ prima settimana full-time*%
 %*la prima lezione dell’insegnamento “Accessibilità e usabilità nella
 progettazione multimediale” deve essere collocata prima che siano
 terminate le lezioni dell’insegnamento “Linguaggi di markup”*%
-:- Min=#min{Giornata:lezione(Giornata,_,accessibilita_usabilita_progettazione_multimediale,_)}, Max=#max{Giornata1:lezione(Giornata1,_,linguaggi_di_markup,_)}, Max > Min.
+:- Min=#min{Giornata:lezione(Giornata,_,accessibilita_usabilita_progettazione_multimediale,_)}, Max=#max{Giornata1:lezione(Giornata1,_,linguaggi_di_markup,_)}, Max < Min.
 
 
 %ogni insegnamento deve rispettare le propedeuticità

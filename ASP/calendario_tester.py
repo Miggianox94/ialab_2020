@@ -72,6 +72,25 @@ def checkBloccoLibero(df):
         return False
     return True
 
+def checkEndProjectManagement(df):
+    if df.loc[df['insegnamento'] == 'project_management'].day.max() > 18:
+        print("project_management finish after 18th day!")
+        return False
+    return True
+
+def checkAccessibilitausabilita(df):
+    if df.loc[df['insegnamento'] == 'linguaggi_di_markup'].day.max() < df.loc[df['insegnamento'] == 'accessibilita_usabilita_progettazione_multimediale'].day.min():
+        print("Last lesson of linguaggi_di_markup before first of accessibilita_usabilita_progettazione_multimediale")
+        return False
+    return True
+
+def checkpropedeuticita(df,propDict):
+    for before in propDict:
+        if df.loc[df['insegnamento'] == before].day.max() > df.loc[df['insegnamento'] == propDict.get(before)].day.min():
+            print("propedeutico relationship not satisfacted!",before,df.loc[df['insegnamento'] == before].day.max(),"-->",propDict.get(before),df.loc[df['insegnamento'] == propDict.get(before)].day.min())
+            return False
+    return True
+
 def runTests():
     df = pd.read_csv(INPUT_DATA_FILE,index_col=False, skipinitialspace=True)
     mystring = ''
@@ -108,7 +127,20 @@ def runTests():
         "presentazioneCorso":2
         }
     TEACHERS = ["muzzetto", "pozzato", "gena", "tomatis", "micalizio", "terranova", "mazzei", "giordani", "zanchetta", "vargiu", "boniolo", "damiano", "suppini", "valle", "ghidelli", "gabardi", "santangelo", "taddeo", "gribaudo", "schifanella", "lombardo", "travostino", "bloccolibero", "presentazioneCorso"]
-
+    PROPEDEUTICO = {
+        "fondamenti_di_iCT_e_paradigmi_di_programmazione":"ambienti_sviluppo_linguaggi_clientsideweb",
+        "ambienti_sviluppo_linguaggi_clientsideweb":"progettazione_sviluppo_applicazioni_web_mobile1",
+        "progettazione_sviluppo_applicazioni_web_mobile1":"progettazione_sviluppo_applicazioni_web_mobile2",
+        "progettazione_basi_dati":"tecnologie_server_side_web",
+        "linguaggi_di_markup":"ambienti_sviluppo_linguaggi_clientsideweb",
+        "project_management":"marketing_digitale",
+        "marketing_digitale":"tecniche_strumenti_marketing_digitale",
+        "project_management":"strumenti_metodi_interazione_social_media",
+        "project_management":"progettazionegrafica_design_interfacce",
+        "acquisizione_elaborazione_immagini_stat":"elementi_fotografia_digitale",
+        "elementi_fotografia_digitale":"acquisizione_elaborazione_sequenze_immagini_digitali",
+        "acquisizione_elaborazione_immagini_stat":"grafica_3d"
+    }
     '''
     with open(INPUT_DATA_FILE, 'rb') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
@@ -144,12 +176,15 @@ def runTests():
     checkBloccoLibero(df)
 
     #l’insegnamento “Project Management” deve concludersi non oltre l prima settimana full-time
+    checkEndProjectManagement(df)
 
     '''la prima lezione dell’insegnamento “Accessibilità e usabilità nella
     progettazione multimediale” deve essere collocata prima che siano
     terminate le lezioni dell’insegnamento “Linguaggi di markup”'''
+    checkAccessibilitausabilita(df)
 
     #ogni insegnamento deve rispettare le propedeuticità
+    checkpropedeuticita(df,PROPEDEUTICO)
 
 if __name__ == "__main__":
     runTests()
