@@ -59,9 +59,6 @@ propedeutica(acquisizione_elaborazione_immagini_stat,grafica_3d).
 
 %numero giorni totali assumendo che la prima sia un venerdì
 
-
-
-
 giornata(1,8).
 giornata(2,5).
 
@@ -146,6 +143,7 @@ giornata(56,5).
 ore(1..8).
 
 vincoloAttivo(1;2;3;4;5;6;7;0).
+%vincoloAttivo(nessuno).
 
 
 %ogni giorno deve avere esattamente le sue ore di lezione-> tot=376
@@ -219,10 +217,11 @@ propedeuticità:in particolare la prima lezione dell’insegnamento della
 colonna di destra deve essere successiva alle prime 4 ore di lezione del
 corrispondente insegnamento della colonna di sinistra
 *%
-:- vincoloAttivo(3), Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Diff =(Destra - Sinistra), Diff <= 4.
-:- vincoloAttivo(4), Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Diff =(Destra - Sinistra), Diff <= 4.
-:- vincoloAttivo(5), Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Diff =(Destra - Sinistra), Diff <= 4.
-:- vincoloAttivo(6), Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+%https://github.com/potassco/clingo/issues/172
+:- vincoloAttivo(3), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(4), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(5), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Diff =(Destra - Sinistra), Diff <= 4.
+:- vincoloAttivo(6), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Sinistra=#min{Fine:lezione(Fine,_,tecnologie_server_side_web,_)}, Diff =(Destra - Sinistra), Diff <= 4.
 
 
 
@@ -231,8 +230,8 @@ la distanza fra l’ultima lezione di “Progettazione e sviluppo di applicazion
 web su dispositivi mobile I” e la prima di “Progettazione e sviluppo di
 applicazioni web su dispositivi mobile II” non deve superare le due
 settimane.*%
-minAppWeb2(Min) :- Min=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}.
-maxAppWeb1(Max) :- Max=#max{Fine:lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}.
+minAppWeb2(Min) :- Min=#min{Inizio:lezione(Inizio,_,progettazione_sviluppo_applicazioni_web_mobile2,_)}, Min != #sup.
+maxAppWeb1(Max) :- Max=#max{Fine:lezione(Fine,_,progettazione_sviluppo_applicazioni_web_mobile1,_)}, Max != #inf.
 :- vincoloAttivo(7),  minAppWeb2(Min), maxAppWeb1(Max), (Max-Min) > 10.
 
 #show lezione/4.
