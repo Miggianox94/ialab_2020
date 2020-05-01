@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+
+#NOTA: nella mappa il punto in alto a sinistra è [0,0]
 def main():
     num_fire_ok = 0
     num_fire_ko = 0
@@ -49,19 +51,28 @@ def main():
 
     i = 0
     for x in fire_x:
-        m[x-1][fire_y[i]-1] = 1
+        m[x][fire_y[i]] = 1
         i+=1
     
     i = 0
     for x in guess_x:
-        m[x-1][guess_y[i]-1] = 2
+        m[x][guess_y[i]] = 2
         i+=1
+
+    #flip the matrix
+    flipped = []
+    for row in m:
+        flipped.insert(0, row)
+    
+    for row in flipped:
+        print(row)
 
     cmap = colors.ListedColormap(['Blue','red','yellow'])
     plt.figure(figsize=(10,10))
-    plt.pcolor(m,cmap=cmap,edgecolors='k', linewidths=3)
-    plt.xticks(np.arange(1,10,step=1))
-    plt.yticks(np.arange(1,10,step=1))
+    plt.pcolor(flipped,cmap=cmap,edgecolors='k', linewidths=3)
+    plt.xticks(np.arange(0,10,step=1),range(0,10,1))
+    plt.yticks(np.arange(0,10,step=1),reversed(range(0,10,1)))
+
     plt.show()
 if __name__ == "__main__":
     main()

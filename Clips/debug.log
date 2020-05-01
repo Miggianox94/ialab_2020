@@ -1,23 +1,19 @@
 TRUE
 CLIPS> (reset)
 CLIPS> (run)
-
+
 Trying random cell...
-[FIRE]--7|4
-I know that cell [7, 4] contains bot.
+[FIRE]--8|9
 Trying random cell...
-[FIRE]--7|3
+[FIRE]--8|7
 Trying random cell...
-[FIRE]--5|4
-I know that cell [5, 4] contains top.
-[GUESS]--6|4
-I know that cell [6, 4] contains middle.
+[FIRE]--8|5
 Trying random cell...
-[FIRE]--5|3
+[FIRE]--8|4
+I know that cell [8, 4] contains sub.
 Trying random cell...
-[FIRE]--3|4
-I know that cell [3, 4] contains sub.
+[FIRE]--8|3
 I don't know what to do!
-Your score is -10
-[STATISTICS]3|2|0|0|2|2
+Your score is -265
+[STATISTICS]1|4|0|0|19|1
 CLIPS> (dribble-off)
