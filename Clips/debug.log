@@ -1,0 +1,23 @@
+TRUE
+CLIPS> (reset)
+CLIPS> (run)
+
+Trying random cell...
+[FIRE]--7|4
+I know that cell [7, 4] contains bot.
+Trying random cell...
+[FIRE]--7|3
+Trying random cell...
+[FIRE]--5|4
+I know that cell [5, 4] contains top.
+[GUESS]--6|4
+I know that cell [6, 4] contains middle.
+Trying random cell...
+[FIRE]--5|3
+Trying random cell...
+[FIRE]--3|4
+I know that cell [3, 4] contains sub.
+I don't know what to do!
+Your score is -10
+[STATISTICS]3|2|0|0|2|2
+CLIPS> (dribble-off)
