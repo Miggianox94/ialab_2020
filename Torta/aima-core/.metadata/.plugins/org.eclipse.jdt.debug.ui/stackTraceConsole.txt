@@ -1,0 +1,4 @@
+long startTime = System.nanoTime();
+myCall(); 
+long stopTime = System.nanoTime();
+System.out.println(stopTime - startTime);

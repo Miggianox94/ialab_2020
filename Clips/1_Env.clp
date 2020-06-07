@@ -184,14 +184,15 @@
 )
 
 
-(defrule solve-count-guessed-ok 
-	(solve)
-	(guess ?x ?y)
-	?c <- (cell (x ?x) (y ?y) (content boat) (status none))
-	?st <- (statistics (num_guess_ok ?gok))
+
+(defrule solve-count-guessed-ok
+        (solve)
+        (guess ?x ?y)
+        ?c <- (cell (x ?x) (y ?y) (content boat) (status none))
+        ?st <- (statistics (num_guess_ok ?gok))
 =>
 	(modify ?st (num_guess_ok (+ 1 ?gok)))
-	(modify ?c (status guessed))
+	(modify ?c (content hit-boat) (status guessed))
 )
 
 (defrule solve-count-guessed-ko 
@@ -217,6 +218,7 @@
 (defrule solve-sink-count
 	(solve)
 	?s<- (sink-boat ?n)
+        (not (sink-checked ?n))
 	?st <- (statistics (num_sink ?sink))
 =>
 	(modify ?st (num_sink (+ 1 ?sink)))

@@ -1,0 +1,130 @@
+package aima.core.probability.bayes.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import aima.core.probability.CategoricalDistribution;
+import aima.core.probability.Factor;
+import aima.core.probability.RandomVariable;
+import aima.core.probability.bayes.BayesianNetwork;
+import aima.core.probability.bayes.Node;
+import aima.core.probability.bayes.exact.EliminationAsk;
+import aima.core.probability.proposition.AssignmentProposition;
+
+public class IalabDBN extends DynamicBayesNet {
+
+	// It is the current slice of the rollupfiltering algorithm
+	private DynamicBayesNet currentSlice;
+
+	// the updated CPT for each node in keys
+	private Map<Node, CategoricalDistribution> lastCPTs;
+
+	public IalabDBN(BayesianNetwork priorNetwork, Map<RandomVariable, RandomVariable> X_0_to_X_1,
+			Set<RandomVariable> E_1, Node[] rootNodes) {
+		super(priorNetwork, X_0_to_X_1, E_1, rootNodes);
+		this.currentSlice = new DynamicBayesNet(priorNetwork, X_0_to_X_1, E_1, rootNodes);
+
+	}
+
+	public IalabDBN(BayesianNetwork priorNetwork, Map<RandomVariable, RandomVariable> X_0_to_X_1,
+			Set<RandomVariable> E_1, Node[] rootNodes, DynamicBayesNet currentSlice) {
+		super(priorNetwork, X_0_to_X_1, E_1, rootNodes);
+		this.currentSlice = currentSlice;
+
+	}
+
+	/**
+	 * Allows to transition the network one slice ahead.
+	 * 
+	 * @param observations
+	 *            The [Array]<[AssignmentProposition]> used to represent the
+	 *            observation of the evidence [RandomVariable]s.
+	 */
+	public void forward_old(AssignmentProposition[] observations, EliminationAsk inference) {
+		// EliminationAsk inference = new EliminationAsk();
+
+		List<Node> nextRootNodes = new ArrayList<>();
+
+		lastCPTs = new HashMap<>();
+
+		//calcolo il termine di filtering
+		for (RandomVariable x0 : currentSlice.getX_0_to_X_1().keySet()) {
+			RandomVariable x1 = currentSlice.getX_0_to_X_1().get(x0);
+			
+			
+			Set<RandomVariable> query = new HashSet<>();
+			query.add(x1);
+			for(Node parent : currentSlice.getNode(x1).getParents()){
+				if(!currentSlice.getX_1_VariablesInTopologicalOrder().contains(parent.getRandomVariable())){
+					continue;
+				}
+				query.add(parent.getRandomVariable());
+			}
+			
+			// eseguo VE
+			CategoricalDistribution newCpt = inference.ask(query.toArray(new RandomVariable[query.size()]), observations, currentSlice);
+			 
+
+			
+			// eseguo VE
+			//CategoricalDistribution newCpt = inference.ask(new RandomVariable[] { x1 }, observations, currentSlice);
+
+			// aggiorno la CPT di t-1
+			Node node = currentSlice.getNode(x0);
+			node.updateCPT(null, x0, newCpt.getValues());
+
+			nextRootNodes.add(node);
+			lastCPTs.put(node, newCpt);
+			//System.out.println(x0 + " : valuesLength->" + newCpt.getValues().length);
+		}
+
+		// passo al nuovo slice: creo una nuova network con la stessa struttura
+		// (tutti gli slice hanno la stessa struttura)
+		// TODO: forse al posto di getE_1 devo passare le randomvariables che ci
+		// sono in observations (o forse devo fare setE_1 prima di newcpt
+		
+		/*currentSlice = new DynamicBayesNet(
+											currentSlice.getPriorNetwork(), 
+											currentSlice.getX_0_to_X_1(),
+											currentSlice.getE_1(), 
+											nextRootNodes.toArray(new Node[nextRootNodes.size()])
+										);*/
+	}
+	
+	
+	public List<Factor> forward(AssignmentProposition[] observations, EliminationAsk inference, List<Factor> factors_last_step,List<RandomVariable> queryVars) {
+
+		lastCPTs = new HashMap<>();
+		List<Factor> factors = new ArrayList<>();
+
+		//calcolo il termine di filtering
+		for (RandomVariable x0 : currentSlice.getX_0_to_X_1().keySet()) {
+			RandomVariable x1 = currentSlice.getX_0_to_X_1().get(x0);
+			
+			// eseguo VE
+			factors.addAll(0, inference.eliminationAskWithFactors(new RandomVariable[]{x1}, observations, currentSlice, factors_last_step));
+
+			EliminationAsk.getProbTableFromFactors(factors,queryVars);
+			Node node = currentSlice.getNode(x0);
+			node.updateCPT(null, x0, newCpt.getValues());
+		}
+		
+		return factors;
+		
+		
+
+	}
+
+	public DynamicBayesNet getCurrentSlice() {
+		return currentSlice;
+	}
+
+	public Map<Node, CategoricalDistribution> getLastCPTs() {
+		return lastCPTs;
+	}
+
+}

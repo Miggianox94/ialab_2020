@@ -2,18 +2,28 @@ TRUE
 CLIPS> (reset)(reset)
 CLIPS> (run)
 
-Trying random cell...
-[FIRE]--8|9
-Trying random cell...
-[FIRE]--8|7
-Trying random cell...
-[FIRE]--8|5
-Trying random cell...
-[FIRE]--8|4
-I deduced that cell [8, 4] contains sub.
-Trying random cell...
-[FIRE]--8|3
+I know that cell [9, 9] contains water.
+I know that cell [7, 7] contains water.
+I know that cell [7, 6] contains water.
+I know that cell [7, 2] contains water.
+I know that cell [6, 5] contains bot.
+I know that cell [4, 2] contains water.
+I know that cell [3, 9] contains top.
+I know that cell [3, 5] contains top.
+I know that cell [3, 0] contains left.
+I know that cell [2, 6] contains water.
+I know that cell [2, 4] contains water.
+[FIRE]--5|5
+I know that cell [5, 5] contains middle.
+[GUESS]--4|5
+[FIRE]--4|9
+I know that cell [4, 9] contains middle.
+[GUESS]--5|9
+[FIRE]--3|1
+I know that cell [3, 1] contains right.
+[FIRE]--4|8
+[FIRE]--5|4
 I don't know what to do!
-Your score is -265
-[STATISTICS]1|4|0|0|19|1
+Your score is -65
+[STATISTICS]3|2|2|0|11|3
 CLIPS> (dribble-off)

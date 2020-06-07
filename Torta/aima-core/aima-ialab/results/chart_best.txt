@@ -1,0 +1,77 @@
+{
+	"type": "serial",
+	"categoryField": "category",
+	"rotate": true,
+	"angle": 30,
+	"depth3D": 30,
+	"startDuration": 1,
+	"theme": "light",
+	"categoryAxis": {
+		"gridPosition": "start"
+	},
+	"trendLines": [],
+	"graphs": [
+		{
+			"balloonText": "[[title]] of [[category]]:[[value]]",
+			"fillAlphas": 1,
+			"id": "AmGraph-1",
+			"title": "graph 1",
+			"type": "column",
+			"valueField": "column-1"
+		},
+		{
+			"balloonText": "[[title]] of [[category]]:[[value]]",
+			"fillAlphas": 1,
+			"id": "AmGraph-2",
+			"title": "graph 2",
+			"type": "column",
+			"valueField": "column-2"
+		}
+	],
+	"guides": [],
+	"valueAxes": [
+		{
+			"id": "ValueAxis-1",
+			"title": ""
+		}
+	],
+	"allLabels": [],
+	"balloon": {},
+	"legend": {
+		"enabled": true,
+		"useGraphSettings": true
+	},
+	"titles": [
+		{
+			"id": "Title-1",
+			"size": 15,
+			"text": "Chart Title"
+		}
+	],
+	"dataProvider": [
+		{
+			"category": "cow",
+			"column-1": "743.800"
+		},
+		{
+			"category": "alarm",
+			"column-1": "256.800"
+		},
+		{
+			"category": "survey",
+			"column-1": "504.400"
+		},
+		{
+			"category": "munin",
+			"column-1": "139.100"
+		},
+		{
+			"category": "link",
+			"column-1": "229.900"
+		},
+		{
+			"category": "win95pts",
+			"column-1": "197.000"
+		}
+	]
+}

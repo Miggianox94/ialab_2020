@@ -1,0 +1,137 @@
+********* EXPERIMENT 0 *********
+	Inference type: EliminationAsk
+	[Rain_t{[true, false]}] 0.883357041251778 | 0.11664295874822192 | 
+	TIME: 11387900 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.79
+		[Rain_t=false]: 0.21
+---------
+	Inference type: EliminationFill
+	[Rain_t{[true, false]}] 0.883357041251778 | 0.11664295874822192 | 
+	TIME: 85922900 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.92
+		[Rain_t=false]: 0.08
+---------
+	Inference type: EliminationMinDegree
+	[Rain_t{[true, false]}] 0.883357041251778 | 0.11664295874822192 | 
+	TIME: 1490900 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.88
+		[Rain_t=false]: 0.12
+---------
+********* EXPERIMENT 1 *********
+	Inference type: EliminationAsk
+	[Rain_t{[true, false]}] 0.1927429759954352 | 0.8072570240045649 | 
+	TIME: 246600 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.22
+		[Rain_t=false]: 0.78
+---------
+	Inference type: EliminationFill
+	[Rain_t{[true, false]}] 0.1927429759954352 | 0.8072570240045649 | 
+	TIME: 6515600 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.25
+		[Rain_t=false]: 0.75
+---------
+	Inference type: EliminationMinDegree
+	[Rain_t{[true, false]}] 0.1927429759954352 | 0.8072570240045649 | 
+	TIME: 1519400 ns
+	ParticleFiltering (approx):
+		[Rain_t=true]: 0.22
+		[Rain_t=false]: 0.78
+---------
+********* EXPERIMENT 2 *********
+	Inference type: EliminationAsk
+	[Y{[true, false]}] 0.8985468156752213 | 0.1014531843247786 | 
+	TIME: 1343000 ns
+	ParticleFiltering (approx):
+		[Y=true]: 0.93
+		[Y=false]: 0.07
+---------
+	Inference type: EliminationFill
+	[Y{[true, false]}] 0.8985468156752213 | 0.1014531843247786 | 
+	TIME: 10614700 ns
+	ParticleFiltering (approx):
+		[Y=true]: 0.94
+		[Y=false]: 0.06
+---------
+	Inference type: EliminationMinDegree
+	[Y{[true, false]}] 0.8985468156752213 | 0.1014531843247786 | 
+	TIME: 719500 ns
+	ParticleFiltering (approx):
+		[Y=true]: 0.85
+		[Y=false]: 0.15
+---------
+********* EXPERIMENT 3 *********
+	Inference type: EliminationAsk
+	[I{[true, false]}] 0.9265321052145505 | 0.07346789478544939 | 
+	TIME: 1145400 ns
+	ParticleFiltering (approx):
+		[I=true]: 0.99
+		[I=false]: 0.01
+---------
+	Inference type: EliminationFill
+	[I{[true, false]}] 0.9265321052145505 | 0.07346789478544939 | 
+	TIME: 10547100 ns
+	ParticleFiltering (approx):
+		[I=true]: 0.94
+		[I=false]: 0.06
+---------
+	Inference type: EliminationMinDegree
+	[I{[true, false]}] 0.9265321052145505 | 0.07346789478544939 | 
+	TIME: 3684000 ns
+	ParticleFiltering (approx):
+		[I=true]: 1.0
+---------
+********* EXPERIMENT 4 *********
+	Inference type: EliminationAsk
+	[Asia{[true, false]}] 0.30954660228192377 | 0.6904533977180763 | 
+	TIME: 1257300 ns
+	ParticleFiltering (approx):
+		[Asia=true]: 0.45
+		[Asia=false]: 0.55
+---------
+	Inference type: EliminationFill
+	[Asia{[true, false]}] 0.3095466022819239 | 0.6904533977180762 | 
+	TIME: 2558100 ns
+	ParticleFiltering (approx):
+		[Asia=true]: 0.41
+		[Asia=false]: 0.59
+---------
+	Inference type: EliminationMinDegree
+	[Asia{[true, false]}] 0.30954660228192377 | 0.6904533977180762 | 
+	TIME: 1530300 ns
+	ParticleFiltering (approx):
+		[Asia=true]: 0.81
+		[Asia=false]: 0.19
+---------
+********* EXPERIMENT 5 *********
+	Inference type: EliminationAsk
+	[Rain_t{[true, false]}] [Wind_t{[true, false]}] 0.4237553342816501 | 0.45960170697012803 | 0.06230440967283073 | 0.05433854907539118 | 
+	TIME: 157000 ns
+	ParticleFiltering (approx):
+		[Rain_t=false][Wind_t=true]: 0.06
+		[Rain_t=false][Wind_t=false]: 0.09
+		[Rain_t=true][Wind_t=false]: 0.38
+		[Rain_t=true][Wind_t=true]: 0.47
+---------
+	Inference type: EliminationFill
+	[Rain_t{[true, false]}] [Wind_t{[true, false]}] 0.42375533428165013 | 0.45960170697012803 | 0.06230440967283073 | 0.05433854907539119 | 
+	TIME: 486900 ns
+	ParticleFiltering (approx):
+		[Rain_t=false][Wind_t=true]: 0.05
+		[Rain_t=false][Wind_t=false]: 0.04
+		[Rain_t=true][Wind_t=false]: 0.53
+		[Rain_t=true][Wind_t=true]: 0.38
+---------
+	Inference type: EliminationMinDegree
+	[Rain_t{[true, false]}] [Wind_t{[true, false]}] 0.42375533428165013 | 0.45960170697012803 | 0.06230440967283073 | 0.05433854907539119 | 
+	TIME: 170700 ns
+	ParticleFiltering (approx):
+		[Rain_t=false][Wind_t=true]: 0.07
+		[Rain_t=false][Wind_t=false]: 0.04
+		[Rain_t=true][Wind_t=false]: 0.44
+		[Rain_t=true][Wind_t=true]: 0.45
+---------

@@ -1,0 +1,7 @@
+package it.coluccia.ialab2020.torta.project;
+
+import aima.core.probability.RandomVariable;
+
+public interface TimeRandomVariable extends RandomVariable {
+
+}

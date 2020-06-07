@@ -1,0 +1,10 @@
+package it.coluccia.ialab2020.torta.project;
+
+public interface TimeRandomVariable extends RandomVariable {
+	
+	/**
+	 * Return time step this variable refers to
+	 * @return
+	 */
+	int getStep();
+}
