@@ -261,4 +261,105 @@ public class DynamicBayesNetExampleFactory {
         return new DynamicBayesNet(priorNetwork, X_0_to_X_1, E_1, rain_tm1, wind_tm1);
 
     }
+    
+    
+	@SuppressWarnings("unused")
+	public static DynamicBayesianNetwork getComplexNetExample() {
+		FiniteNode prior_A = new FullCPTNode(new RandVar("A_t-1", new BooleanDomain()),new double[] { 0.8, 0.2});
+		FiniteNode prior_B = new FullCPTNode(new RandVar("B_t-1", new BooleanDomain()),new double[] { 0.6, 0.4, 0.1, 0.9 }, prior_A);
+		FiniteNode prior_C = new FullCPTNode(new RandVar("C_t-1", new BooleanDomain()),new double[] { 0.1, 0.9, 0.5, 0.5 }, prior_A);
+		FiniteNode prior_D = new FullCPTNode(new RandVar("D_t-1", new BooleanDomain()),new double[] { 0.7, 0.3, 0.4, 0.6 }, prior_A);
+		FiniteNode prior_E = new FullCPTNode(new RandVar("E_t-1", new BooleanDomain()),new double[] { 0.3, 0.7, 0.9, 0.1 }, prior_B);
+		FiniteNode prior_F = new FullCPTNode(new RandVar("F_t-1", new BooleanDomain()),new double[] { 0.4, 0.6, 0.3, 0.7 }, prior_C);
+		FiniteNode prior_G = new FullCPTNode(new RandVar("G_t-1", new BooleanDomain()),new double[] { 0.5, 0.5, 0.8, 0.2 }, prior_D);
+		FiniteNode prior_H = new FullCPTNode(new RandVar("H_t-1", new BooleanDomain()),new double[] { 0.5, 0.5, 0.6, 0.4, 0.3, 0.7, 0.9, 0.1 }, prior_F, prior_G);
+		FiniteNode prior_I = new FullCPTNode(new RandVar("I_t-1", new BooleanDomain()),new double[] { 0.9, 0.1, 0.5, 0.5 }, prior_H);
+		FiniteNode prior_L = new FullCPTNode(new RandVar("L_t-1", new BooleanDomain()),new double[] { 0.8, 0.2, 0.1, 0.9 }, prior_G);
+		
+
+		BayesNet priorNetwork = new BayesNet(prior_A);
+		
+        /**
+         * [RandomVariable]s declaration
+         */
+		RandVar A_m1 = new RandVar("A_t-1", new BooleanDomain());
+		RandVar B_m1 = new RandVar("B_t-1", new BooleanDomain());
+		RandVar C_m1 = new RandVar("C_t-1", new BooleanDomain());
+		RandVar D_m1 = new RandVar("D_t-1", new BooleanDomain());
+		RandVar E_m1 = new RandVar("E_t-1", new BooleanDomain());
+		RandVar F_m1 = new RandVar("F_t-1", new BooleanDomain());
+		RandVar G_m1 = new RandVar("G_t-1", new BooleanDomain());
+		RandVar H_m1 = new RandVar("H_t-1", new BooleanDomain());
+		RandVar I_m1 = new RandVar("I_t-1", new BooleanDomain());
+		RandVar L_m1 = new RandVar("L_t-1", new BooleanDomain());
+		
+		RandVar A = new RandVar("A", new BooleanDomain());
+		RandVar B = new RandVar("B", new BooleanDomain());
+		RandVar C = new RandVar("C", new BooleanDomain());
+		RandVar D = new RandVar("D", new BooleanDomain());
+		RandVar E = new RandVar("E", new BooleanDomain());
+		RandVar F = new RandVar("F", new BooleanDomain());
+		RandVar G = new RandVar("G", new BooleanDomain());
+		RandVar H = new RandVar("H", new BooleanDomain());
+		RandVar I = new RandVar("I", new BooleanDomain());
+		RandVar L = new RandVar("L", new BooleanDomain());
+		
+		RandVar evid1 = new RandVar("Evid1", new BooleanDomain());
+		RandVar evid2 = new RandVar("Evid2", new BooleanDomain());
+
+		
+		
+        /**
+         * [FullCPTNode]s declaration
+         */
+		// Prior belief state
+		FiniteNode nodem1_A = new FullCPTNode(A_m1,new double[] { 0.8, 0.2});
+		FiniteNode nodem1_B = new FullCPTNode(B_m1,new double[] { 0.6, 0.4, 0.1, 0.9 }, nodem1_A);
+		FiniteNode nodem1_C = new FullCPTNode(C_m1,new double[] { 0.1, 0.9, 0.5, 0.5 }, nodem1_A);
+		FiniteNode nodem1_D = new FullCPTNode(D_m1,new double[] { 0.7, 0.3, 0.4, 0.6 }, nodem1_A);
+		FiniteNode nodem1_E = new FullCPTNode(E_m1,new double[] { 0.3, 0.7, 0.9, 0.1 }, nodem1_B);
+		FiniteNode nodem1_F = new FullCPTNode(F_m1,new double[] { 0.4, 0.6, 0.3, 0.7 }, nodem1_C);
+		FiniteNode nodem1_G = new FullCPTNode(G_m1,new double[] { 0.5, 0.5, 0.8, 0.2 }, nodem1_D);
+		FiniteNode nodem1_H = new FullCPTNode(H_m1,new double[] { 0.5, 0.5, 0.6, 0.4, 0.3, 0.7, 0.9, 0.1 }, nodem1_F, nodem1_G);
+		FiniteNode nodem1_I = new FullCPTNode(I_m1,new double[] { 0.9, 0.1, 0.5, 0.5 }, nodem1_H);
+		FiniteNode nodem1_L = new FullCPTNode(L_m1,new double[] { 0.8, 0.2, 0.1, 0.9 }, nodem1_G);
+		
+		
+		// Transition Model
+		FiniteNode node_A = new FullCPTNode(A,new double[] { 0.8, 0.2, 0.6, 0.4}, nodem1_A);
+		FiniteNode node_B = new FullCPTNode(B,new double[] { 0.6, 0.4, 0.1, 0.9, 0.5, 0.5, 0.8, 0.2 }, node_A, nodem1_D);
+		FiniteNode node_C = new FullCPTNode(C,new double[] { 0.1, 0.9, 0.5, 0.5, 0.7, 0.3, 0.4, 0.6 }, node_A, nodem1_C);
+		FiniteNode node_D = new FullCPTNode(D,new double[] { 0.7, 0.3, 0.4, 0.6, 0.1, 0.9, 0.5, 0.5 }, node_A, nodem1_B);
+		FiniteNode node_E = new FullCPTNode(E,new double[] { 0.3, 0.7, 0.9, 0.1, 0.1, 0.9, 0.5, 0.5}, node_B, nodem1_E);
+		FiniteNode node_F = new FullCPTNode(F,new double[] { 0.4, 0.6, 0.3, 0.7, 0.1, 0.9, 0.5, 0.5 }, node_C, nodem1_F);
+		FiniteNode node_G = new FullCPTNode(G,new double[] { 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.1, 0.9 }, node_D, nodem1_G);
+		FiniteNode node_H = new FullCPTNode(H,new double[] { 0.5, 0.5, 0.6, 0.4, 0.3, 0.7, 0.9, 0.1, 0.4, 0.6, 0.3, 0.7, 0.1, 0.9, 0.5, 0.5 }, node_F, node_G, nodem1_H);
+		FiniteNode node_I = new FullCPTNode(I,new double[] { 0.9, 0.1, 0.5, 0.5, 0.9, 0.1, 0.1, 0.9 }, node_H, nodem1_I);
+		FiniteNode node_L = new FullCPTNode(L,new double[] { 0.8, 0.2, 0.1, 0.9, 0.9, 0.1, 0.5, 0.5 }, node_G, nodem1_L);
+
+		// Sensor Model
+		FiniteNode node_evid1 = new FullCPTNode(evid1,new double[] { 0.50, 0.50, 0.05, 0.95, 0.20, 0.80, 0.05, 0.95 },node_F,node_H);
+		FiniteNode node_evid2 = new FullCPTNode(evid2,new double[] { 0.95, 0.05, 0.05, 0.95 },node_H);
+		
+		//specifico le equivalenze tra i nodi di t-1 e t
+		Map<RandomVariable, RandomVariable> X_0_to_X_1 = new HashMap<RandomVariable, RandomVariable>();
+		
+		X_0_to_X_1.put(A_m1, A);
+		X_0_to_X_1.put(D_m1, B);
+		X_0_to_X_1.put(C_m1, C);
+		X_0_to_X_1.put(B_m1, D);
+		X_0_to_X_1.put(F_m1, F);
+		X_0_to_X_1.put(G_m1, G);
+		X_0_to_X_1.put(E_m1, E);
+		X_0_to_X_1.put(L_m1, L);
+		X_0_to_X_1.put(H_m1, H);
+		X_0_to_X_1.put(I_m1, I);
+
+		Set<RandomVariable> E_1 = new HashSet<RandomVariable>();
+		E_1.add(evid1);
+		E_1.add(evid2);
+
+
+		return new DynamicBayesNet(priorNetwork, X_0_to_X_1, E_1, false, nodem1_A);
+	}
 }

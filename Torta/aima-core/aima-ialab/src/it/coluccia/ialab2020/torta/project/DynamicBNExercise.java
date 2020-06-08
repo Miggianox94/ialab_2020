@@ -407,6 +407,34 @@ public class DynamicBNExercise {
 		});
 
 		observations.add(observationDBN);
+		
+		//****** EXPERIMENT 6 (complex net) *******/
+		networks.add(DynamicBayesNetExampleFactory.getComplexNetExample());
+		
+		randVars = new TimeRandomVariable[]{
+				new RandVar("B", new BooleanDomain())
+		};
+		queryVars.add(randVars);
+		
+		
+		observationDBN = new LinkedList<>();
+		
+		//step 1
+		observationDBN.add(new AssignmentProposition[]{
+				new AssignmentProposition(new RandVar("Evid1", new BooleanDomain()), true ),
+				new AssignmentProposition(new RandVar("Evid2", new BooleanDomain()), true )
+		});
+		
+		//step 2
+		observationDBN.add(new AssignmentProposition[]{
+				new AssignmentProposition(new RandVar("Evid1", new BooleanDomain()), false ),
+				new AssignmentProposition(new RandVar("Evid2", new BooleanDomain()), true )
+		});
+
+		observations.add(observationDBN);
+	
 	}
+	
+	
 
 }
