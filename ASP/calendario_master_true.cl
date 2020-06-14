@@ -217,7 +217,7 @@ propedeuticità:in particolare la prima lezione dell’insegnamento della
 colonna di destra deve essere successiva alle prime 4 ore di lezione del
 corrispondente insegnamento della colonna di sinistra
 *%
-%https://github.com/potassco/clingo/issues/172
+%https://github.com/potassco/clingo/issues/172  --> crea warning che non si rimuove seguendo il suggerimento nel thread
 :- vincoloAttivo(3), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,progettazione_basi_dati,_)}, Sinistra=#min{Fine:lezione(Fine,_,fondamenti_di_iCT_e_paradigmi_di_programmazione,_)}, Diff =(Destra - Sinistra), Diff <= 4.
 :- vincoloAttivo(4), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,introduzione_social_media_management,_)}, Sinistra=#min{Fine:lezione(Fine,_,marketing_digitale,_)}, Diff =(Destra - Sinistra), Diff <= 4.
 :- vincoloAttivo(5), Destra != #sup, Sinistra != #sup, Destra=#min{Inizio:lezione(Inizio,_,gestione_risorse_umane,_)}, Sinistra=#min{Fine:lezione(Fine,_,comunicazione_pubblicitaria_comunicazione_pubblica,_)}, Diff =(Destra - Sinistra), Diff <= 4.

@@ -92,11 +92,14 @@ public class EliminationAsk implements BayesInference {
 		// factors <- []
 		List<Factor> factors = new ArrayList<Factor>();
 		// for each var in ORDER(bn.VARS) do
+		int maxSizeFactor = 0;
 		for (RandomVariable var : order) {
 			// factors <- [MAKE-FACTOR(var, e) | factors]
 			Factor singleFactor = makeFactor(var, e, bn);
 			factors.add(0, singleFactor);
+			maxSizeFactor = Math.max(singleFactor.getArgumentVariables().size(), maxSizeFactor);
 		}
+		//System.out.println("+++++ MAX SIZE FACTOR VA: "+maxSizeFactor);
 
 		for (RandomVariable var : order) {
 			if(evidenceVars.contains(var)){
@@ -224,24 +227,7 @@ public class EliminationAsk implements BayesInference {
 		return ((ProbabilityTable) product.pointwiseProductPOS(_identity, queryVars.toArray(new RandomVariable[queryVars.size()])))
 				.normalize();
 	}
-	
-	/**
-	 * It returns all RandomVariable objects that are referred to var children nodes
-	 * @param var
-	 * @param bn
-	 * @return
-	 */
-	@Deprecated
-	private Set<RandomVariable> getChildVars(RandomVariable var, BayesianNetwork bn){
-		BayesNet network = (BayesNet) bn;
-		Set<Node> children = network.getNode(var).getChildren();
-		Set<RandomVariable> vars = new HashSet<>();
-		for(Node child : children){
-			vars.add(child.getRandomVariable());
-		}
-		return vars;
 
-	}
 
 	//
 	// START-BayesInference
@@ -331,6 +317,13 @@ public class EliminationAsk implements BayesInference {
 		// been seen so far.
 		List<RandomVariable> order = new ArrayList<RandomVariable>(vars);
 		Collections.reverse(order);
+		
+		/*System.out.println("VARIABLE ELIMINATION INVERSE TOPOLOGICAL ORDER: ");
+		String orderStr = "";
+		for(RandomVariable var : order){
+			orderStr+="|"+var;
+		}
+		System.out.println(orderStr);*/
 
 		return order;
 	}

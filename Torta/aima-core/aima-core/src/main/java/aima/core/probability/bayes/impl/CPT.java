@@ -150,6 +150,9 @@ public class CPT implements ConditionalProbabilityTable {
 		Set<RandomVariable> fofVars = new LinkedHashSet<RandomVariable>(
 				table.getFor());
 		for (AssignmentProposition ap : evidence) {
+			/*if(fofVars.size() == 1){
+				continue;
+			}*/
 			fofVars.remove(ap.getTermVariable());
 		}
 		

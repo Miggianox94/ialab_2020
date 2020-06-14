@@ -1,0 +1,35 @@
+package it.coluccia.ialab2020.torta.project;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import aima.core.probability.RandomVariable;
+import aima.core.probability.bayes.Node;
+
+/**
+ * It represents the interaction graph used in MinFill and MinDegre order for VA algorithm
+ * @author Miggianox94
+ *
+ */
+public class InteractionGraph {
+
+	// key: randomVarName; values: set of randomvar names linked
+	private Map<String,Set<String>> graph;
+	
+	public InteractionGraph(Set<Node> nodes){
+		this.graph = new HashMap<>();
+		for(Node node : nodes){
+			Set<RandomVariable> randVarOn = node.getCPD().getFor();
+			Set<String> randVarOnNames = new HashSet<>();
+			for(RandomVariable rndvar : randVarOn){
+				randVarOnNames.add(rndvar.getName());
+			}
+			graph.put(node.getRandomVariable().getName(), randVarOnNames);
+		}
+	}
+	
+	private RandomVar findNodeWithLessNeighbours
+	
+}

@@ -1,7 +1,6 @@
 TRUE
 CLIPS> (reset)(reset)
-CLIPS> (run)
-
+CLIPS> (run)
 I know that cell [9, 9] contains water.
 I know that cell [7, 7] contains water.
 I know that cell [7, 6] contains water.
@@ -26,4 +25,3 @@ I know that cell [3, 1] contains right.
 I don't know what to do!
 Your score is -65
 [STATISTICS]3|2|2|0|11|3
-CLIPS> (dribble-off)

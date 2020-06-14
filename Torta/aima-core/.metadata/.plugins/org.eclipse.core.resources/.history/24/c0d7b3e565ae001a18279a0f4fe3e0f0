@@ -1,0 +1,10 @@
+package it.coluccia.ialab2020.torta.project;
+
+/**
+ * It represents the interaction graph used in MinFill and MinDegre order for VA algorithm
+ * @author Miggianox94
+ *
+ */
+public class InteractionGraph {
+
+}
