@@ -333,6 +333,13 @@ public class PruningAndOrder {
 	private static void pruneNetwork(BayesNet bn, RandomVariable[] queries, AssignmentProposition[] evidences){
 		BayesNet network = (BayesNet)bn;
 		
+		//pruning edges
+		/*TODO: prima era messo come ultimo step ma non eliminava mai nulla 
+		*(in quanto le variabili venivano direttamente pruned dai metodi prima (sui nodi))
+		*quindi ho provato a metterlo qui per testarlo
+		**/
+		network.pruneEdges(evidences);
+		
 		Set<RandomVariable> ancestors = getAncestors(bn,queries,evidences);
 		Set<RandomVariable> varsInNet = new HashSet<>(bn.getVarToNodeMap().keySet());
 		for(RandomVariable varInNet : varsInNet){
@@ -352,8 +359,6 @@ public class PruningAndOrder {
 		//remove irrilevant nodes
 		network.removeMSeparatedNodes(queries, evidences);
 
-		//pruning edges
-		network.pruneEdges(evidences);
 		
 	}
 	
