@@ -132,6 +132,7 @@ public class BayesNet implements BayesianNetwork {
 						continue;
 					}
 					//se è già stato inserito verrà skippato in quanto è un set
+					//Tuple fa override di equals in quanto uguaglianza è simmetrica
 					this.marriedNodes.add(new Tuple<>(parent1,parent2));
 					
 				}
@@ -193,11 +194,13 @@ public class BayesNet implements BayesianNetwork {
 		List<Node> toVisit = new ArrayList<>();
 		toVisit.add(hiddenNode);
 		Set<Node> visited = new HashSet<>();
+		//ricerca in ampiezza
 		while(!toVisit.isEmpty()){
 			Node nod = toVisit.remove(0);
 			if(!visited.contains(nod)){
 				visited.add(nod);
 				Set<Node> neighbours = getNeighbours(nod, new ArrayList<>(evidences));
+				//mi serve per togliere eventuali nodi pruned precedentemente
 				neighbours = neighbours.stream().filter(c -> variables.contains(c.getRandomVariable())).collect(Collectors.toSet());
 				toVisit.addAll(neighbours);
 			}
@@ -208,6 +211,7 @@ public class BayesNet implements BayesianNetwork {
 			queriesNodes.add(getNode(quer));
 		}
 		
+		//se posso raggiungere tutte le query vars allora torno true
 		if(visited.containsAll(queriesNodes)){
 			return true;
 		}
@@ -224,12 +228,17 @@ public class BayesNet implements BayesianNetwork {
 		for(AssignmentProposition evidence : evidences){
 			evidenceNodes.add(getNode(evidence.getTermVariable()));
 		}
+		
+		Set<Node> evidenceVars = new HashSet<>();
+		for(AssignmentProposition prop : evidences){
+			evidenceVars.add(getNode(prop.getTermVariable()));
+		}
 
 		for(AssignmentProposition evidence : evidences){
 			Node evidenceNode = getNode(evidence.getTermVariable());
-			if(evidenceNode == null){
+			/*if(evidenceNode == null){
 				System.err.println("ATTENTION! "+evidence.getTermVariable()+ "NODE IS NULL!");
-			}
+			}*/
 			for(Node child : evidenceNode.getChildren()){
 				//controllo che non sia già stato pruned o che sia esso stesso una evidence
 				if(!variables.contains(child.getRandomVariable()) || evidenceNodes.contains(child)){
@@ -238,9 +247,17 @@ public class BayesNet implements BayesianNetwork {
 				//ricalcolo CPT
 				FullCPTNode fullChild = (FullCPTNode)child;
 				ConditionalProbabilityTable cpt = fullChild.getCPT();
-				Factor factor = cpt.getFactorFor(evidences);
-				child.updateCPT(child.getRandomVariable(),evidence.getTermVariable(), factor.getValues());
-				System.out.println("Updated CPT for variable "+child.getRandomVariable().getName());
+				
+				//sono le evidenze che sono anche parents della cpt
+				Set<AssignmentProposition> evidencesSubset = new HashSet<>();
+				for(AssignmentProposition ev : evidences){
+					if(cpt.getParents().contains(ev.getTermVariable())){
+						evidencesSubset.add(ev);
+					}
+				}
+				Factor factor = cpt.getFactorFor(evidencesSubset.toArray(new AssignmentProposition[evidencesSubset.size()]));
+				child.updateCPT(evidenceVars,evidence.getTermVariable(), factor.getValues());
+				//System.out.println("Updated CPT for variable "+child.getRandomVariable().getName());
 			}
 			//rimuovo gli archi verso i figli
 			evidenceNode.setChildren(new HashSet<>());

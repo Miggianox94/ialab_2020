@@ -103,7 +103,7 @@ public class PruningAndOrder {
 	 * the experiment in position i
 	 */
 	private static void initializeQueryAndEvidenceExperiments(){
-		//************* EXPERIMENT 0 cow.xml************//
+		//************* EXPERIMENT 0 cow.xml************// --> max factor sempre 2
 		RandomVariable[][] randVars = new RandomVariable[][]{
 			new RandomVariable[]{
 					new RandVar("Pregnancy", new BooleanDomain())
@@ -126,7 +126,7 @@ public class PruningAndOrder {
 		};
 		EVIDENCE_VARS.add(assignmentVars);
 		
-		//************* EXPERIMENT 1 survey.xml************//
+		//************* EXPERIMENT 1 survey.xml************// --> max factor sempre 3
 		/*
 		 * 	Number of nodes: 6
 			Number of arcs: 6
@@ -171,7 +171,7 @@ public class PruningAndOrder {
 		 */
 		RandomVariable[][] randVars2 = new RandomVariable[][]{
 			new RandomVariable[]{
-					new RandVar("SHUNT", new ArbitraryTokenDomain("NORMAL","HIGH")),
+					new RandVar("SHUNT", new ArbitraryTokenDomain("NORMAL","HIGH")), //max factor-> inv top.=8. altri 6
 			},
 			new RandomVariable[]{
 					new RandVar("MINVOLSET", new ArbitraryTokenDomain("LOW","NORMAL","HIGH"))
@@ -215,7 +215,7 @@ public class PruningAndOrder {
 					new RandVar("DIFFN_DISTR", new ArbitraryTokenDomain("DIST","PROX","RANDOM"))
 			},
 			new RandomVariable[]{
-					new RandVar("DIFFN_DISTR", new ArbitraryTokenDomain("DIST","PROX","RANDOM"))
+					new RandVar("DIFFN_DISTR", new ArbitraryTokenDomain("DIST","PROX","RANDOM")) //max factor inv.top 5, altri 3
 			},
 			new RandomVariable[]{
 					new RandVar("DIFFN_DISTR", new ArbitraryTokenDomain("DIST","PROX","RANDOM"))
@@ -257,7 +257,7 @@ public class PruningAndOrder {
 		 */
 		RandomVariable[][] randVars4 = new RandomVariable[][]{
 			new RandomVariable[]{
-					new RandVar("Z_2_a_f", new ArbitraryTokenDomain("F","M"))
+					new RandVar("Z_2_a_f", new ArbitraryTokenDomain("F","M")) //max fact inv.top=18, altri 2
 			},
 			new RandomVariable[]{
 					new RandVar("Z_2_a_f", new ArbitraryTokenDomain("F","M"))
@@ -294,7 +294,7 @@ public class PruningAndOrder {
 					new RandVar("PrtCbl", new ArbitraryTokenDomain("Connected","Loose"))
 			},
 			new RandomVariable[]{
-					new RandVar("NtSpd", new ArbitraryTokenDomain("OK","Slow"))
+					new RandVar("NtSpd", new ArbitraryTokenDomain("OK","Slow")) //max fact. inv top=6, altre 4
 			}
 		};
 		QUERY_VARS.add(randVars5);
@@ -334,7 +334,7 @@ public class PruningAndOrder {
 		BayesNet network = (BayesNet)bn;
 		
 		//pruning edges
-		/*TODO: prima era messo come ultimo step ma non eliminava mai nulla 
+		/*NOTA: prima era messo come ultimo step ma non eliminava mai nulla 
 		*(in quanto le variabili venivano direttamente pruned dai metodi prima (sui nodi))
 		*quindi ho provato a metterlo qui per testarlo
 		**/
@@ -345,7 +345,7 @@ public class PruningAndOrder {
 		for(RandomVariable varInNet : varsInNet){
 			//theorem 1
 			if(!ancestors.contains(varInNet)){
-				System.out.println("Pruning var "+varInNet);
+				//System.out.println("Pruning var "+varInNet);
 				//rimuovo la variabile dalla rete
 				network.getRootNodes().remove(network.getNode(varInNet));
 				network.getVarToNodeMap().remove(varInNet);

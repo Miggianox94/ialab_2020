@@ -42,7 +42,7 @@
 =>
 	(bind ?newy (+ ?y1 1))
 	;(printout t "Guess on cell [" ?x1 ", " ?newy "]!" crlf)
-	(printout t "[GUESS]--" ?x1 "|" ?newy crlf)
+	(printout t "[FIRE]--" ?x1 "|" ?newy crlf)
 	(assert (exec (step ?s) (action fire) (x ?x1) (y ?newy)))
 	;(assert (deduced-cell (x ?x1) (y ?newy) (content middle)))
 	(pop-focus)

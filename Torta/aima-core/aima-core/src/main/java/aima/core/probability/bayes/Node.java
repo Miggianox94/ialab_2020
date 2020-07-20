@@ -47,7 +47,7 @@ public interface Node {
 	
 	void setChildren(Set<Node> children);
 	
-	void updateCPT(RandomVariable parentToRemove,RandomVariable var, double[] values);
+	void updateCPT(Set<Node> parentsToRemove,RandomVariable var, double[] values);
 
 	/**
 	 * Get this Node's Markov Blanket:<br>

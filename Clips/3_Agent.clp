@@ -400,16 +400,7 @@
 
 ;-----------------------------------------------------------------------------------------------
 
-;TODO: da rimuovere dopo i primi test
-;(defrule inerzia
-;	;(declare (salience 10))
-;	(status (step ?s)(currently running))
-;	(not (exec  (action fire) (x 5) (y 4)) )
-;=>
-;	(assert (exec (step ?s) (action fire) (x 5) (y 4)))
-;    (pop-focus)
-;)
-
+;se ho almeno 1 fire faccio random fire
 (defrule no-more-actions
 	(declare (salience -10))
 	(status (step ?s)(currently running))

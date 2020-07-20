@@ -86,7 +86,7 @@ public abstract class AbstractNode implements Node {
 
 	public abstract ConditionalProbabilityDistribution getCPD();
 	
-	public abstract void updateCPT(RandomVariable parent, RandomVariable var, double[] values);
+	public abstract void updateCPT(Set<Node> parents, RandomVariable var, double[] values);
 
 	// END-Node
 	//

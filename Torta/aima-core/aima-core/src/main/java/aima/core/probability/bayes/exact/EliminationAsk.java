@@ -97,9 +97,8 @@ public class EliminationAsk implements BayesInference {
 			// factors <- [MAKE-FACTOR(var, e) | factors]
 			Factor singleFactor = makeFactor(var, e, bn);
 			factors.add(0, singleFactor);
-			maxSizeFactor = Math.max(singleFactor.getArgumentVariables().size(), maxSizeFactor);
+			//maxSizeFactor = Math.max(singleFactor.getArgumentVariables().size(), maxSizeFactor);
 		}
-		//System.out.println("+++++ MAX SIZE FACTOR VA: "+maxSizeFactor);
 
 		for (RandomVariable var : order) {
 			if(evidenceVars.contains(var)){
@@ -114,7 +113,9 @@ public class EliminationAsk implements BayesInference {
 				factors = sumOut(var, factors, bn);
 			}*/
 			factors = sumOut(var, factors, bn);
+			maxSizeFactor = Math.max(getMax(factors), maxSizeFactor);
 		}
+		//System.out.println("+++++ MAX SIZE FACTOR VA: "+maxSizeFactor);
 
 		// return NORMALIZE(POINTWISE-PRODUCT(factors))
 		Factor product = pointwiseProduct(factors);
@@ -122,6 +123,15 @@ public class EliminationAsk implements BayesInference {
 		// query variables
 		return ((ProbabilityTable) product.pointwiseProductPOS(_identity, X))
 				.normalize();
+	}
+	
+	
+	private int getMax(List<Factor> factors){
+		int max = 0;
+		for(Factor fact : factors){
+			max = Math.max(max, fact.getArgumentVariables().size());
+		}
+		return max;
 	}
 	
 	
@@ -176,7 +186,6 @@ public class EliminationAsk implements BayesInference {
 
 
 		// factors <- []
-		//List<Factor> factors = new ArrayList<Factor>();
 		// for each var in ORDER(bn.VARS) do
 		for (RandomVariable var : order) {
 			// factors <- [MAKE-FACTOR(var, e) | factors]
@@ -185,37 +194,20 @@ public class EliminationAsk implements BayesInference {
 				continue;
 			}
 			Factor singleFactor = makeFactor(var, e, bn);
-			//factors.add(0, singleFactor);
 			factors.add(singleFactor);
 		}
 		factors.addAll(factorsLastStep);
-		//boolean first = true;
+
 		for (RandomVariable var : order) {
-			/*if(varToSkip.contains(var)){
-				//continue;
-			}
-			if(evidenceVars.contains(var)){
-				//non faccio sumout sulle variabili di evidenza
-				continue;
-			}
-			if(Arrays.asList(X).contains(var)){
-				//..an ordering of variables NOT IN Q
-				continue;
-			}*/
+
 			if (hidden.contains(var)) {
 				factors = sumOut(var, factors, bn);
 			}
-			//factors = sumOut(var, factors, bn);
+
 		}
 		
 		return factors;
 
-		// return NORMALIZE(POINTWISE-PRODUCT(factors))
-		//Factor product = pointwiseProduct(factors);
-		// Note: Want to ensure the order of the product matches the
-		// query variables
-		/*return ((ProbabilityTable) product.pointwiseProductPOS(_identity, X))
-				.normalize();*/
 	}
 	
 	public static ProbabilityTable getProbTableFromFactors(List<Factor> factors, List<RandomVariable> queryVars){

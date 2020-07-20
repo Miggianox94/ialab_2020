@@ -1,4 +1,9 @@
 %prolog param description: https://www.swi-prolog.org/pldoc/man?section=preddesc
+% https://www.swi-prolog.org/pldoc/doc/_SWI_/library/heaps.pl
+% min_of_heap/3 è constant
+% empty_heap/1 è constant
+% add_to_heap/4 è constant
+% get_from_heap/4 è O(n)
 
 % astar(-Soluzione).
 astar(Soluzione):-
@@ -7,6 +12,7 @@ astar(Soluzione):-
     h(S,Priorita),
 	
 	%ogni nodo della coda è formato da stato-listaAzioniPerArrivareAlNodo-GcostoPerArrivareAQuelNodo
+    %listaAzioni del nodo finale rappresenta la mia soluzione finale 
     add_to_heap(Coda,Priorita,nodo(S,[],0),CodaAggiornata),
     startAstar(CodaAggiornata,[],Soluzione),
 	!, %non appena trovo il primo risultato mi fermo
@@ -53,11 +59,13 @@ findChildren(nodo(S,ListaAzioni,G),[Az|AltreAzioniApplicabili],Esplorati,Coda0,C
     trasforma(Az,S,SNuovo),
     \+member(SNuovo,Esplorati),!,
 	g_funct(G,S,SNuovo,GNuovo),
-	append(ListaAzioni,[Az],ListaAzioniNuova),
+    append(ListaAzioni,[Az],ListaAzioniNuova),
+    %uso aggiungiAdHeap in quanto devo controllare che SNuovo non sia stato già aggiunto e nel caso devo aggiornare la sua priority
 	aggiungiAdHeap(nodo(SNuovo,ListaAzioniNuova,GNuovo),Coda0,Codatmp),
     findChildren(nodo(S,ListaAzioni,G),AltreAzioniApplicabili,Esplorati,Codatmp,Coda1).
 	
-% findChildren(+nodo(S,ListaAzioni,G),+ListaApplicabili,+Esplorati,+Coda0,-Coda1).	
+% findChildren(+nodo(S,ListaAzioni,G),+ListaApplicabili,+Esplorati,+Coda0,-Coda1).
+% questo viene chiamato nel caso in cui quello precedente fallisca perchè è già membro di esplorati
 findChildren(nodo(S,ListaAzioni,G),[_|AltreAzioniApplicabili],Esplorati,Coda0,Coda1):-
     findChildren(nodo(S,ListaAzioni,G),AltreAzioniApplicabili,Esplorati,Coda0,Coda1).
 	
@@ -69,7 +77,7 @@ aggiungiAdHeap(nodo(S,ListaAzioni,G),Coda0,Coda1):-
     getFromHeap(S,Coda0,nodo(SCorrente,ListaAzioniCorrente,GCorrente),Coda),!,
     confrontaEInserisci(Coda,nodo(S,ListaAzioni,G),nodo(SCorrente,ListaAzioniCorrente,GCorrente),Coda1).
 	
-%richiamato quando non viene trovato l'elemento S nello heap attuale.	
+%richiamato quando non viene trovato l'elemento S nello heap attuale (quindi è la prima volta che lo incontro).	
 % aggiungiAdHeap(+nodo(S,ListaAzioni,G),+Coda0,-Coda).	
 aggiungiAdHeap(nodo(S,ListaAzioni,G),Coda0,Coda):-
     h(S,H),
@@ -86,7 +94,7 @@ confrontaEInserisci(Coda0,nodo(S1,ListaAzioni1,G1),nodo(_,_,G2),Coda):-
 
 %questa viene richiamata quando G1 >= G2	
 % confrontaEInserisci(+Coda0,+nodo(S1,ListaAzioni1,G1),+nodo(S2,ListaAzioni2,G2),-Coda)	
-confrontaEInserisci(Coda0,_,nodo(S2,ListaAzioni2),Coda):-
+confrontaEInserisci(Coda0,_,nodo(S2,ListaAzioni2,G2),Coda):-
 	h(S2,H),
     Priorita is G2 + H,
     add_to_heap(Coda0,Priorita,nodo(S2,ListaAzioni2,G2),Coda).

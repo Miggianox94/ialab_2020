@@ -106,35 +106,7 @@ public class DynamicBNExercise {
 				System.out.println("\tParticleFiltering (approx):");
 				
 				printSamples(distApprox,N,queryVars);
-				
-				/*Map<String,Float> particleRes = new HashMap<>();
-				//float numberTrue = 0f;	
-				for(AssignmentProposition[] val : distApprox){
-					String key = "";
-					Float num = 0f;
-					for(AssignmentProposition assignment : val){
-						//AssignmentProposition assignment = val[val.length-1];
-						RandomVariable currVar = assignment.getTermVariable();
-						if(!queryVars.contains(currVar)){
-							continue;
-						}
-						key += "["+currVar+"="+assignment.getValue().toString()+"]";
-						num += 1;
-					}
-					Float finalNum = particleRes.get(key);
-					if(finalNum == null){
-						particleRes.put(key, num);
-					}else{
-						particleRes.put(key, num+finalNum);
-					}
 
-					
-				}
-				System.out.println("\tParticleFiltering (approx): ");
-				for(String key : particleRes.keySet()){
-					System.out.println("\t\t"+key+": "+particleRes.get(key)/(float)N);
-				}*/
-				//System.out.println("\tParticleFiltering (approx): "+numberTrue/100f+" , "+(1f-(numberTrue/100f)));
 				
 				
 				System.out.println("---------");	
@@ -149,9 +121,10 @@ public class DynamicBNExercise {
 	 * @param observations
 	 */
 	private static ProbabilityTable variableElimination(IalabDBN myNetwork,List<AssignmentProposition[]> observations,EliminationAsk inference, List<RandomVariable> queryVars){
-
+		//NOTA: i factor in randomvarInfo contengono i parametri del fattore (le variabili non fissate, quindi i fattori delle evidenze conterranno solo i loro padri e non loro stesse)
 		List<Factor> lastFactors = new LinkedList<>();
 		int counter = 1;
+		//ciclo sulle observation per ogni istante temporale
 		for(AssignmentProposition[] obs : observations){
 			Set<Factor> factorList = new HashSet<Factor>(lastFactors);
 			//per ogni observation faccio uno step forward della mia network

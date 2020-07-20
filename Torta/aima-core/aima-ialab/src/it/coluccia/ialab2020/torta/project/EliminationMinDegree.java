@@ -42,7 +42,7 @@ public class EliminationMinDegree extends EliminationAsk {
 
 			// aggiungo arco ad ogni coppia di nodi che sono neighbours ma che
 			// non sono adiacenti
-			// non tengo in considerazione i nodi presenti in varlist
+			// non tengo in considerazione i nodi presenti in alreadyReturned
 			interGraph.addEdgesToNeighbours(var);
 
 			// aggiungo il nodo alla lista ordinata da ritornare

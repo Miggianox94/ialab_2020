@@ -3,6 +3,7 @@ init :-
 	retractall(livello(_)), 
 	assert(livello(0)).
 
+% https://www.swi-prolog.org/pldoc/man?predicate=dynamic/1
 :- dynamic livello/1.
 
 % iterativeDeeping(-Soluzione).
@@ -28,6 +29,7 @@ profonditaLimitataDEP(Soluzione):-
   profonditaLimitataDEP(Soluzione).
 
 % ric_prof_MaxDepthDEP(+S,_,_,[]).
+% stoppo il backtracking se arrivo ad un nodo finale usando il cut
 ric_prof_MaxDepthDEP(S,_,_,[]):-finale(S),!.
 
 % ric_prof_MaxDepthDEP(+S,+Visitati,+MaxDepth,?[Azione|AltreAzioni])

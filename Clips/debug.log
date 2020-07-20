@@ -1,27 +1,37 @@
 TRUE
 CLIPS> (reset)(reset)
 CLIPS> (run)
-I know that cell [9, 9] contains water.
-I know that cell [7, 7] contains water.
-I know that cell [7, 6] contains water.
-I know that cell [7, 2] contains water.
-I know that cell [6, 5] contains bot.
-I know that cell [4, 2] contains water.
-I know that cell [3, 9] contains top.
-I know that cell [3, 5] contains top.
-I know that cell [3, 0] contains left.
-I know that cell [2, 6] contains water.
-I know that cell [2, 4] contains water.
-[FIRE]--5|5
-I know that cell [5, 5] contains middle.
-[GUESS]--4|5
-[FIRE]--4|9
-I know that cell [4, 9] contains middle.
-[GUESS]--5|9
-[FIRE]--3|1
-I know that cell [3, 1] contains right.
-[FIRE]--4|8
-[FIRE]--5|4
+I know that cell [9, 7] contains water.
+I know that cell [7, 8] contains water.
+I know that cell [7, 5] contains water.
+I know that cell [7, 4] contains water.
+I know that cell [7, 3] contains water.
+I know that cell [7, 1] contains water.
+I know that cell [5, 9] contains water.
+I know that cell [5, 4] contains water.
+I know that cell [4, 5] contains sub.
+I know that cell [4, 3] contains water.
+I know that cell [4, 0] contains water.
+I know that cell [3, 1] contains bot.
+I know that cell [2, 7] contains bot.
+I know that cell [2, 3] contains top.
+I know that cell [1, 6] contains water.
+I know that cell [1, 2] contains water.
+I know that cell [0, 9] contains top.
+I know that cell [0, 2] contains middle.
+I know that cell [0, 1] contains middle.
+[FIRE]--3|3
+I know that cell [3, 3] contains bot.
+[FIRE]--1|9
+I know that cell [1, 9] contains bot.
+[FIRE]--2|1
+I know that cell [2, 1] contains top.
+[FIRE]--1|7
+I know that cell [1, 7] contains middle.
+[GUESS]--0|7
+[FIRE]--0|0
+I know that cell [0, 0] contains left.
+[GUESS]--0|3
 I don't know what to do!
-Your score is -65
-[STATISTICS]3|2|2|0|11|3
+Your score is 100
+[STATISTICS]5|0|2|0|6|6

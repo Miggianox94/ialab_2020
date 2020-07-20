@@ -4,7 +4,7 @@
 <fullyQualifiedTypeName name="javax.print.attribute.SetOfIntegerSyntax"/>
 <fullyQualifiedTypeName name="aima.core.probability.example.DynamicBayesNetExampleFactory"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="aima.core.probability.bayes.Node"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="aima.core.probability.bayes.Node"/>
 </qualifiedTypeNameHistroy>

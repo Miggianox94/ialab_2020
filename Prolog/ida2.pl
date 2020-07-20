@@ -1,6 +1,6 @@
 % init
 init2 :- 
-    retractall(currentListOver(_)), 
+  retractall(currentListOver(_)), 
 	assert(currentListOver([])).
 
 
@@ -10,14 +10,14 @@ init2 :-
 
 % ida(-Soluzione).
 ida(Soluzione):-
-    init2,
+  init2,
 	iniziale(S),
 	h(S,MaxDepth),
 	profonditaLimitataIDA(nodo(S,0),MaxDepth,Soluzione),
 	!, %non appena trovo il primo risultato mi fermo
-    write('soluzione trovata: '),write(Soluzione),nl,
-    length(Soluzione,LE),
-    write('soluzione trovata lunghezza: '),write(LE).
+  write('soluzione trovata: '),write(Soluzione),nl,
+  length(Soluzione,LE),
+  write('soluzione trovata lunghezza: '),write(LE).
 
 % profonditaLimitataIDA(+nodo(S,G),+MaxDepth,-Soluzione).
 profonditaLimitataIDA(nodo(S,G),MaxDepth,Soluzione):-
@@ -51,11 +51,11 @@ ric_prof_MaxDepthIDA(nodo(S,G),Visitati,MaxDepth,[Azione|AltreAzioni]):-
  
 % ric_prof_MaxDepthIDA(+nodo(S,G),_,+MaxDepth,_) 
 ric_prof_MaxDepthIDA(nodo(S,G),_,MaxDepth,_):-
-    \+MaxDepth>0,
+  \+MaxDepth>0,
 	h(S,H),
 	F is H+G,
 	%faccio l'append della lista dei valori di f(n) che superano maxdepth
-    currentListOver(CurrentListOver),
+  currentListOver(CurrentListOver),
 	retractall(currentListOver(_)), 
-    assert(currentListOver([F|CurrentListOver])),
+  assert(currentListOver([F|CurrentListOver])),
 	fail.

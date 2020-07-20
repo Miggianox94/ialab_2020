@@ -1,5 +1,7 @@
 package aima.core.probability.bayes.impl;
 
+import java.util.Set;
+
 import aima.core.probability.RandomVariable;
 import aima.core.probability.bayes.ConditionalProbabilityDistribution;
 import aima.core.probability.bayes.ConditionalProbabilityTable;
@@ -38,15 +40,15 @@ public class FullCPTNode extends AbstractNode implements FiniteNode {
 	 * @param var
 	 * @param values
 	 */
-	public void updateCPT(RandomVariable parentToRemove, RandomVariable var, double[] values){
-		this.getParents().remove(parentToRemove);
+	public void updateCPT(Set<Node> parentsToRemove, RandomVariable var, double[] values){
+		this.getParents().removeAll(parentsToRemove);
 		RandomVariable[] conditionedOn = new RandomVariable[getParents().size()];
 		int i = 0;
 		for (Node p : getParents()) {
 			conditionedOn[i++] = p.getRandomVariable();
 		}
 
-		cpt = new CPT(var, values, conditionedOn);
+		cpt = new CPT(this.cpt.getOn(), values, conditionedOn);
 	}
 
 	//
